@@ -1,0 +1,83 @@
+[user]
+  name = rainrain
+  email = 102855367+twicerain@users.noreply.github.com
+   
+[color]
+  ui = true
+
+[alias]
+  st = status -sb
+  last = log -1 HEAD
+
+  a = add
+  cm = commit --short
+  am = commit --amend
+  wo = commit --amend --no-edit
+  wip = "!git add -A && git commit -m 'WIP'"
+
+  co = checkout
+  cob = checkout -b
+  br = branch
+  cb = checkout -b
+
+  l = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --decorate --date=short --color --decorate
+  la = log --graph --all --decorate --oneline
+
+  df = diff
+  dc = diff --cached
+
+  undo = reset --soft HEAD~1
+
+[pretty]
+	pretty = "%C(yellow)%h%Creset %s %Cblue(%cr)%Creset %Cgreen<%an>%Creset"
+
+
+[commit]
+  template = ~/.gitmessage.txt
+
+[init]
+	defaultBranch = main
+
+[core]
+  editor = nvim
+
+[diff]
+  algorithm = histogram
+  colorMoved = default
+
+[difftool]
+  prompt = false
+
+[difftool "vimdiff"]
+  cmd = nvim -d "$LOCAL" "$REMOTE"
+
+[merge]
+  tool = vimdiff
+  conflictstyle = diff3
+
+[mergetool "vimdiff"]
+  cmd = nvim -d "$LOCAL" "$BASE" "$REMOTE"
+  trustExitCode = false
+
+[rerere]
+  enabled = true
+
+[pull]
+  rebase = true
+
+[rebase]
+  autoStash = true
+
+[push]
+  default = simple
+
+[fetch]
+	prune = true
+
+[credential "https://github.com"]
+	helper = 
+	helper = !/usr/bin/gh auth git-credential
+
+[credential "https://gist.github.com"]
+	helper = 
+	helper = !/usr/bin/gh auth git-credential
