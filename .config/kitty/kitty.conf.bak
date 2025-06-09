@@ -1,0 +1,10 @@
+font_family CommitMono
+bold_font auto
+italic_font auto
+disable_ligatures never
+
+
+# BEGIN_KITTY_THEME
+# Everforest Dark Medium
+include current-theme.conf
+# END_KITTY_THEME

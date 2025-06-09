@@ -1,0 +1,38 @@
+return {}
+-- { 'williamboman/mason-lspconfig.nvim', enabled = true },
+-- { 'williamboman/mason.nvim', opts = { ensure_installed = {} } },
+-- {
+--   'nvim-treesitter/nvim-treesitter',
+--   opts = {
+--     auto_install = false,
+--   },
+-- },
+-- {
+--   'neovim/nvim-lspconfig',
+--   opts = {
+--     servers = {
+--       nixd = {
+--         settings = {
+--           nixd = {
+--             nixpkgs = {
+--               expr = 'import <nixpkgs> { }',
+--             },
+--             formatting = {
+--               command = { 'nixfmt' },
+--             },
+--             options = {
+--               nixos = {
+--                 expr = '(builtins.getFlake "/home/rain/nix").nixosConfigurations.nixos.options',
+--               },
+--
+--               home_manager = {
+--                 expr = '(builtins.getFlake "/home/rain/nix").homeConfigurations."rain@nixos".options',
+--               },
+--             },
+--           },
+--         },
+--       },
+--     },
+--   },
+-- },
+-- }

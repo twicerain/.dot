@@ -1,0 +1,19 @@
+# .dot .gitignore
+
+# default ignore all while allowing recursing specific dirs
+/*
+!/.config/
+/.config/*
+
+
+# include
+!/.config/fastfetch/
+!/.config/fish/
+!/.config/hypr/
+!/.config/hyprpanel/
+!/.config/kitty/
+!/.config/lazygit/
+!/.config/nvim/
+!/.config/starship/
+!/.config/tofi/
+!/.config/yazi/

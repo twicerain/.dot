@@ -1,0 +1,44 @@
+# <type>[(scope)][!]: <description>
+#
+# [optional body]
+#
+# [optional footer(s)]
+#
+# ---
+# 
+# type:
+# - enforced:
+#   - feat:     a new feature
+#   - fix:      a bug fix
+# - other:
+#   - build:    changes that affect the build system or external dependencies
+#   - chore:    other changes that don't modify source or test files
+#   - ci:       changes to CI configuration files and scripts
+#   - docs:     documentation only changes
+#   - perf:     a code change that improves performance
+#   - refactor: a code change that neither fixes a bug nor adds a feature
+#   - style:    changes that do not affect the meaning of the code
+#   - test:     adding missing tests or correcting existing tests
+# 
+# general:
+# - 72ch wrap
+# - lowercase fields
+# - description begins with an imperative verb (add, update)
+#
+# semantic versioning (SemVer):
+# - <major>: breaking changes (footer "BREAKING CHANGE" or header "!")
+# - <minor>: type "feat"
+# - <patch>: type "fix"
+#
+# examples:
+# > feat(ui): add theme toggle
+# >
+# > Add a new switch in settings to toggle light/dark mode.
+# >
+# > Refs: #42
+#
+# > chore!: drop support for Node 6
+# >
+# > BREAKING CHANGE: use JavaScript features not available in Node 6.
+
+
