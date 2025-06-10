@@ -2,11 +2,11 @@
 
 # default ignore all while allowing recursing specific dirs
 /*
-!/.config/
 /.config/*
 
-
 # include
+!/.pkgs/
+!/.config/
 !/.config/fastfetch/
 !/.config/fish/
 !/.config/hypr/
@@ -17,3 +17,4 @@
 !/.config/starship/
 !/.config/tofi/
 !/.config/yazi/
+!/.config/zellij/
