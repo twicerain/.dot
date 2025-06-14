@@ -397,6 +397,6 @@
   "bar.media.show_active_only": true,
   "bar.battery.hideLabelWhenFull": true,
   "bar.battery.label": true,
-  "bar.network.showWifiInfo": true
+  "bar.network.showWifiInfo": true,
+  "menus.power.lowBatteryNotification": true
 }
-
