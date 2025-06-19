@@ -35,30 +35,63 @@ return {
       },
     },
     dashboard = {
+      width = 60,
       preset = {
-        header = [[
-╭─ ╭─╮ · ╭─╮ ╭─ ╭─╮ · ╭─╮
-│  ├─┤ │ │ │ │  ├─┤ │ │ │
-        ]],
-        -- stylua: ignore
-        ---@type snacks.dashboard.Item[]
+        ---@type snacks.dashboard.Section
+        startup = { section },
+        header = 'amk',
         keys = {
-          { icon = " ", key = "n", desc = "New File", action = ":ene | startinsert" },
-          { icon = " ", key = "c", desc = "Config", action = ":lua Snacks.dashboard.pick('files', {cwd = vim.fn.stdpath('config')})" },
-          { icon = " ", key = "s", desc = "Restore Session", section = "session" },
-          { icon = " ", key = "x", desc = "Lazy Extras", action = ":LazyExtras" },
-          { icon = "󰒲 ", key = "l", desc = "Lazy", action = ":Lazy" },
-          { icon = " ", key = "q", desc = "Quit", action = ":qa" },
+          {
+            icon = ' ',
+            key = 'n',
+            desc = 'new',
+            action = ':ene | startinsert',
+          },
+          {
+            icon = ' ',
+            key = 'r',
+            desc = 'recent',
+            action = ":lua Snacks.dashboard.pick('oldfiles')",
+          },
+          {
+            icon = ' ',
+            key = 'c',
+            desc = 'config',
+            action = ":lua Snacks.dashboard.pick('files', {cwd = vim.fn.stdpath('config')})",
+          },
+          -- { icon = " ", key = "s", desc = "restore session", section = "session" },
+          {
+            icon = '󰒲 ',
+            key = 'L',
+            desc = 'lazy',
+            action = ':Lazy',
+            enabled = package.loaded.lazy ~= nil,
+          },
+          { icon = ' ', key = 'q', desc = 'quit', action = ':qa' },
         },
       },
-      -- stylua: ignore
-      ---@type snacks.dashboard.Section[]
       sections = {
-        { section = "header" },
-        { icon = " ", title = "Recent", section = "recent_files", indent = 2, padding = 1 },
-        { icon = " ", title = "Projects", section = "projects", indent = 2, padding = 1 },
-        { icon = " ", title = "Keymaps", section = "keys", indent = 2, padding = 1 },
-        { sections = "startup" },
+        { section = 'header' },
+        function()
+          if Snacks.git.get_root() == nil then return {} end
+
+          local icon = ' '
+          local cmd =
+            'printf (set_color -o cyan)"\r $(set_color magenta)%s\n$(set_color normal)" $(git branch);  git diff --stat -M -R -C --abbrev'
+          local git_output = vim.fn.system(cmd)
+          local count = select(2, git_output:gsub('\n', '\n'))
+          return {
+            height = math.max(math.min(count, 5), 1),
+            padding = 1,
+            section = 'terminal',
+            enabled = function() return Snacks.git.get_root() ~= nil end,
+            cmd = cmd,
+            tty = 5 * 60,
+          }
+        end,
+        { icon = ' ', section = 'recent_files', padding = 1 },
+        { section = 'keys', padding = 1 },
+        { section = 'startup' },
       },
     },
   },
