@@ -48,6 +48,9 @@ abbr sa "sudo systemctl start"
 abbr sf "systemctl --failed --all"
 abbr s systemctl
 abbr su "systemctl --user"
+abbr ssh "TERM=xterm-256color ssh"
+
+abbr dup "docker compose up --build --remove-orphans -d"
 
 # aliases
 alias ls "eza --color=always --icons --group-directories-first"
