@@ -74,3 +74,6 @@ if status is-interactive
     fzf --fish | source
     eval (zellij setup --generate-auto-start fish | string collect)
 end
+
+# Generated for envman. Do not edit.
+test -s ~/.config/envman/load.fish; and source ~/.config/envman/load.fish
