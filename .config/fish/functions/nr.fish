@@ -15,10 +15,10 @@ function nr --desc "Fuzzy find, select, and run npm scripts found in repo."
     if set -q _flag_help
         printf "Useage: nr [options]  [-- npm_args]\n\n"
         printf "Fuzzy find, select, and run npm scripts found in repo.\n"
-        printf "Options:"
-        printf "  -l, --list    list scripts in repo"
-        printf "  -h, --help    print usage"
-        printf "  --            arguments passed to npm run"
+        printf "Options:\n"
+        printf "  -l, --list    list scripts in repo\n"
+        printf "  -h, --help    print usage\n"
+        printf "  --            arguments passed to npm run\n"
         return 0
     end
 

@@ -9,14 +9,12 @@ git
 github-cli
 lazydocker
 lazygit
-man-db
-man-pages
 neovim
 ripgrep
 starship
 sudo
-tofi
-unzip
+tree
 vim
+yay
 yazi
 zoxide

@@ -5,6 +5,7 @@
 /.config/*
 
 # include
+!/README.md
 !/.pkgs/
 !/.config/
 !/.config/fastfetch/

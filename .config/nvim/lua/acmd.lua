@@ -1,7 +1,9 @@
+-- autocmds
 local function augroup(name)
   return vim.api.nvim_create_augroup("rain" .. name, { clear = true })
 end
 
+-- Toggle relative line numbers off in insert mode
 local toggle_ln_aug = augroup("toggle_ln")
 vim.api.nvim_create_autocmd({ "InsertLeave" }, {
   group = toggle_ln_aug,

@@ -1,4 +1,4 @@
--- lazy.nvim
+-- disabled
 return {
   "folke/noice.nvim",
   enabled = false,
