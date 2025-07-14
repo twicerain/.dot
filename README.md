@@ -42,6 +42,8 @@ All files are ignored by default, and added to untracked/tracked using the [.git
   - fuzzy find and install or remove packages using paru
 - [editor](.config/nvim)
   - nvim inspired by kickstart & lazyvim
+- [nvim virtual rnu](.config/nvim/lua/virtrnu)
+  - custom nvim plugin rendering relative line numbers as virtual text to help with re jumps while scanning code
 
 
 
