@@ -1,11 +1,11 @@
 -- autocmds
 local function augroup(name)
-  return vim.api.nvim_create_augroup("rain" .. name, { clear = true })
+  return vim.api.nvim_create_augroup('rain' .. name, { clear = true })
 end
 
 -- Toggle relative line numbers off in insert mode
-local toggle_ln_aug = augroup("toggle_ln")
-vim.api.nvim_create_autocmd({ "InsertLeave" }, {
+local toggle_ln_aug = augroup('toggle_ln')
+vim.api.nvim_create_autocmd({ 'InsertLeave' }, {
   group = toggle_ln_aug,
   callback = function()
     if vim.wo.nu then
@@ -14,7 +14,7 @@ vim.api.nvim_create_autocmd({ "InsertLeave" }, {
   end,
 })
 
-vim.api.nvim_create_autocmd({ "InsertEnter" }, {
+vim.api.nvim_create_autocmd({ 'InsertEnter' }, {
   group = toggle_ln_aug,
   callback = function()
     if vim.wo.nu then
@@ -24,40 +24,42 @@ vim.api.nvim_create_autocmd({ "InsertEnter" }, {
 })
 
 -- Check if we need to reload the file when it changed
-vim.api.nvim_create_autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
-  group = augroup("checktime"),
+vim.api.nvim_create_autocmd({ 'FocusGained', 'TermClose', 'TermLeave' }, {
+  group = augroup('checktime'),
   callback = function()
-    if vim.o.buftype ~= "nofile" then
-      vim.cmd("checktime")
+    if vim.o.buftype ~= 'nofile' then
+      vim.cmd('checktime')
     end
   end,
 })
 
 -- Highlight on yank
-vim.api.nvim_create_autocmd("TextYankPost", {
-  group = augroup("highlight_yank"),
+vim.api.nvim_create_autocmd('TextYankPost', {
+  group = augroup('highlight_yank'),
   callback = function()
     vim.hl.on_yank()
   end,
 })
 
 -- resize splits if window got resized
-vim.api.nvim_create_autocmd({ "VimResized" }, {
-  group = augroup("resize_splits"),
+vim.api.nvim_create_autocmd({ 'VimResized' }, {
+  group = augroup('resize_splits'),
   callback = function()
     local current_tab = vim.fn.tabpagenr()
-    vim.cmd("tabdo wincmd =")
-    vim.cmd("tabnext " .. current_tab)
+    vim.cmd('tabdo wincmd =')
+    vim.cmd('tabnext ' .. current_tab)
   end,
 })
 
 -- go to last loc when opening a buffer
-vim.api.nvim_create_autocmd("BufReadPost", {
-  group = augroup("last_loc"),
+vim.api.nvim_create_autocmd('BufReadPost', {
+  group = augroup('last_loc'),
   callback = function(event)
-    local exclude = { "gitcommit" }
+    local exclude = { 'gitcommit' }
     local buf = event.buf
-    if vim.tbl_contains(exclude, vim.bo[buf].filetype) or vim.b[buf].last_loc then
+    if
+      vim.tbl_contains(exclude, vim.bo[buf].filetype) or vim.b[buf].last_loc
+    then
       return
     end
     vim.b[buf].last_loc = true
@@ -70,53 +72,53 @@ vim.api.nvim_create_autocmd("BufReadPost", {
 })
 
 -- close some filetypes with <q>
-vim.api.nvim_create_autocmd("FileType", {
-  group = augroup("close_with_q"),
+vim.api.nvim_create_autocmd('FileType', {
+  group = augroup('close_with_q'),
   pattern = {
-    "PlenaryTestPopup",
-    "checkhealth",
-    "dbout",
-    "gitsigns-blame",
-    "grug-far",
-    "help",
-    "lspinfo",
-    "neotest-output",
-    "neotest-output-panel",
-    "neotest-summary",
-    "notify",
-    "qf",
-    "spectre_panel",
-    "startuptime",
-    "tsplayground",
+    'PlenaryTestPopup',
+    'checkhealth',
+    'dbout',
+    'gitsigns-blame',
+    'grug-far',
+    'help',
+    'lspinfo',
+    'neotest-output',
+    'neotest-output-panel',
+    'neotest-summary',
+    'notify',
+    'qf',
+    'spectre_panel',
+    'startuptime',
+    'tsplayground',
   },
   callback = function(event)
     vim.bo[event.buf].buflisted = false
     vim.schedule(function()
-      vim.keymap.set("n", "q", function()
-        vim.cmd("close")
+      vim.keymap.set('n', 'q', function()
+        vim.cmd('close')
         pcall(vim.api.nvim_buf_delete, event.buf, { force = true })
       end, {
         buffer = event.buf,
         silent = true,
-        desc = "Quit buffer",
+        desc = 'Quit buffer',
       })
     end)
   end,
 })
 
 -- make it easier to close man-files when opened inline
-vim.api.nvim_create_autocmd("FileType", {
-  group = augroup("man_unlisted"),
-  pattern = { "man" },
+vim.api.nvim_create_autocmd('FileType', {
+  group = augroup('man_unlisted'),
+  pattern = { 'man' },
   callback = function(event)
     vim.bo[event.buf].buflisted = false
   end,
 })
 
 -- wrap and check for spell in text filetypes
-vim.api.nvim_create_autocmd("FileType", {
-  group = augroup("wrap_spell"),
-  pattern = { "text", "plaintex", "typst", "gitcommit", "markdown" },
+vim.api.nvim_create_autocmd('FileType', {
+  group = augroup('wrap_spell'),
+  pattern = { 'text', 'plaintex', 'typst', 'gitcommit', 'markdown' },
   callback = function()
     vim.opt_local.wrap = true
     vim.opt_local.spell = true
@@ -124,28 +126,28 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 
 -- Fix conceallevel for json files
-vim.api.nvim_create_autocmd({ "FileType" }, {
-  group = augroup("json_conceal"),
-  pattern = { "json", "jsonc", "json5" },
+vim.api.nvim_create_autocmd({ 'FileType' }, {
+  group = augroup('json_conceal'),
+  pattern = { 'json', 'jsonc', 'json5' },
   callback = function()
     vim.opt_local.conceallevel = 0
   end,
 })
 
 -- Auto create dir when saving a file, in case some intermediate directory does not exist
-vim.api.nvim_create_autocmd({ "BufWritePre" }, {
-  group = augroup("auto_create_dir"),
+vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
+  group = augroup('auto_create_dir'),
   callback = function(event)
-    if event.match:match("^%w%w+:[\\/][\\/]") then
+    if event.match:match('^%w%w+:[\\/][\\/]') then
       return
     end
     local file = vim.uv.fs_realpath(event.match) or event.match
-    vim.fn.mkdir(vim.fn.fnamemodify(file, ":p:h"), "p")
+    vim.fn.mkdir(vim.fn.fnamemodify(file, ':p:h'), 'p')
   end,
 })
 
-vim.api.nvim_create_autocmd({ "CursorMoved", "DiagnosticChanged" }, {
-  group = augroup("diagnostic_virt_text_hide"),
+vim.api.nvim_create_autocmd({ 'CursorMoved', 'DiagnosticChanged' }, {
+  group = augroup('diagnostic_virt_text_hide'),
   callback = function(event)
     local lnum, _ = unpack(vim.api.nvim_win_get_cursor(0))
     lnum = lnum - 1 -- need 0-based index
@@ -160,7 +162,13 @@ vim.api.nvim_create_autocmd({ "CursorMoved", "DiagnosticChanged" }, {
     for _, namespace in pairs(vim.diagnostic.get_namespaces()) do
       local ns_id = namespace.user_data.virt_text_ns
       if ns_id then
-        local extmarks = vim.api.nvim_buf_get_extmarks(event.buf, ns_id, { lnum, 0 }, { lnum, -1 }, {})
+        local extmarks = vim.api.nvim_buf_get_extmarks(
+          event.buf,
+          ns_id,
+          { lnum, 0 },
+          { lnum, -1 },
+          {}
+        )
         for _, extmark in pairs(extmarks) do
           local id = extmark[1]
           vim.api.nvim_buf_del_extmark(event.buf, ns_id, id)

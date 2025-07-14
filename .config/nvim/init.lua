@@ -1,11 +1,11 @@
-require("opts")
-require("keys")
-require("boot")
-require("acmd")
+require('opts')
+require('keys')
+require('boot')
+require('acmd')
 
 -- custom plugins
-require("virtrnu").setup({
+require('virtrnu').setup({
   freq = 5,
   padding = 4,
-  align = "left",
+  align = 'left',
 })

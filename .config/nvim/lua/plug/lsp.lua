@@ -1,52 +1,60 @@
 -- LSP Plugins
 return {
   {
-    "folke/lazydev.nvim",
-    ft = "lua",
+    'folke/lazydev.nvim',
+    ft = 'lua',
     opts = {
       library = {
-        { path = "${3rd}/luv/library", words = { "vim%.uv" } },
-        { path = "LazyVim", words = { "LazyVim" } },
-        { path = "snacks.nvim", words = { "Snacks" } },
-        { path = "lazy.nvim", words = { "LazyVim" } },
+        { path = '${3rd}/luv/library', words = { 'vim%.uv' } },
+        { path = 'LazyVim', words = { 'LazyVim' } },
+        { path = 'snacks.nvim', words = { 'Snacks' } },
+        { path = 'lazy.nvim', words = { 'LazyVim' } },
       },
     },
   },
   {
     -- Main LSP Configuration
-    "neovim/nvim-lspconfig",
+    'neovim/nvim-lspconfig',
     dependencies = {
-      { "mason-org/mason.nvim", opts = {} },
-      "mason-org/mason-lspconfig.nvim",
-      "WhoIsSethDaniel/mason-tool-installer.nvim",
+      { 'mason-org/mason.nvim', opts = {} },
+      'mason-org/mason-lspconfig.nvim',
+      'WhoIsSethDaniel/mason-tool-installer.nvim',
 
       -- Useful status updates for LSP.
-      { "j-hui/fidget.nvim", opts = {} },
+      { 'j-hui/fidget.nvim', opts = {} },
 
-      "saghen/blink.cmp",
+      'saghen/blink.cmp',
 
-      { "b0o/SchemaStore.nvim", version = false },
+      { 'b0o/SchemaStore.nvim', version = false },
     },
     config = function()
-      vim.api.nvim_create_autocmd("LspAttach", {
-        group = vim.api.nvim_create_augroup("kickstart-lsp-attach", { clear = true }),
+      vim.api.nvim_create_autocmd('LspAttach', {
+        group = vim.api.nvim_create_augroup(
+          'kickstart-lsp-attach',
+          { clear = true }
+        ),
         callback = function(event)
           local map = function(keys, func, desc, mode)
-            mode = mode or "n"
-            vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = "LSP: " .. desc })
+            mode = mode or 'n'
+            vim.keymap.set(
+              mode,
+              keys,
+              func,
+              { buffer = event.buf, desc = 'LSP: ' .. desc }
+            )
           end
 
-          map("grn", vim.lsp.buf.rename, "rename")
+          map('grn', vim.lsp.buf.rename, 'rename')
 
-          map("gra", vim.lsp.buf.code_action, "goto Code action", { "n", "x" })
-          map("grD", vim.lsp.buf.declaration, "goto declaration")
+          map('gra', vim.lsp.buf.code_action, 'goto Code action', { 'n', 'x' })
+          map('grD', vim.lsp.buf.declaration, 'goto declaration')
 
           ---@param client vim.lsp.Client
           ---@param method vim.lsp.protocol.Method
           ---@param bufnr? integer some lsp support methods only in specific files
           ---@return boolean
           local function client_supports_method(client, method, bufnr)
-            if vim.fn.has("nvim-0.11") == 1 then
+            if vim.fn.has('nvim-0.11') == 1 then
               return client:supports_method(method, bufnr)
             else
               return client.supports_method(method, { bufnr = bufnr })
@@ -61,26 +69,39 @@ return {
           local client = vim.lsp.get_client_by_id(event.data.client_id)
           if
             client
-            and client_supports_method(client, vim.lsp.protocol.Methods.textDocument_documentHighlight, event.buf)
+            and client_supports_method(
+              client,
+              vim.lsp.protocol.Methods.textDocument_documentHighlight,
+              event.buf
+            )
           then
-            local highlight_augroup = vim.api.nvim_create_augroup("kickstart-lsp-highlight", { clear = false })
-            vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
+            local highlight_augroup = vim.api.nvim_create_augroup(
+              'kickstart-lsp-highlight',
+              { clear = false }
+            )
+            vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
               buffer = event.buf,
               group = highlight_augroup,
               callback = vim.lsp.buf.document_highlight,
             })
 
-            vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
+            vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
               buffer = event.buf,
               group = highlight_augroup,
               callback = vim.lsp.buf.clear_references,
             })
 
-            vim.api.nvim_create_autocmd("LspDetach", {
-              group = vim.api.nvim_create_augroup("kickstart-lsp-detach", { clear = true }),
+            vim.api.nvim_create_autocmd('LspDetach', {
+              group = vim.api.nvim_create_augroup(
+                'kickstart-lsp-detach',
+                { clear = true }
+              ),
               callback = function(event2)
                 vim.lsp.buf.clear_references()
-                vim.api.nvim_clear_autocmds({ group = "kickstart-lsp-highlight", buffer = event2.buf })
+                vim.api.nvim_clear_autocmds({
+                  group = 'kickstart-lsp-highlight',
+                  buffer = event2.buf,
+                })
               end,
             })
           end
@@ -89,10 +110,19 @@ return {
           -- code, if the language server you are using supports them
           --
           -- This may be unwanted, since they displace some of your code
-          if client and client_supports_method(client, vim.lsp.protocol.Methods.textDocument_inlayHint, event.buf) then
-            map("<leader>th", function()
-              vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }))
-            end, "toggle Inlay hints")
+          if
+            client
+            and client_supports_method(
+              client,
+              vim.lsp.protocol.Methods.textDocument_inlayHint,
+              event.buf
+            )
+          then
+            map('<leader>th', function()
+              vim.lsp.inlay_hint.enable(
+                not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf })
+              )
+            end, 'toggle Inlay hints')
           end
         end,
       })
@@ -102,7 +132,7 @@ return {
       ---@type vim.diagnostic.Opts
       vim.diagnostic.config({
         severity_sort = true,
-        float = { border = "rounded", source = "if_many" },
+        float = { border = 'rounded', source = 'if_many' },
         underline = { severity = vim.diagnostic.severity.ERROR },
         -- signs = {
         --   text = {
@@ -113,7 +143,7 @@ return {
         --   },
         -- },
         virtual_text = {
-          source = "if_many",
+          source = 'if_many',
           spacing = 2,
           format = function(diagnostic)
             local diagnostic_message = {
@@ -127,7 +157,7 @@ return {
         },
         virtual_lines = {
           current_line = true,
-          source = "if_many",
+          source = 'if_many',
           spacing = 2,
           format = function(diagnostic)
             local diagnostic_message = {
@@ -141,22 +171,26 @@ return {
         },
       })
 
-      local capabilities = require("blink.cmp").get_lsp_capabilities()
+      local capabilities = require('blink.cmp').get_lsp_capabilities()
 
       local servers = {
         lua_ls = {
           settings = {
             Lua = {
               completion = {
-                callSnippet = "Replace",
+                callSnippet = 'Replace',
               },
-              diagnostics = { disable = { "missing-fields" } },
+              diagnostics = { disable = { 'missing-fields' } },
             },
           },
         },
         stylua = {},
         denols = {
-          root_dir = require("lspconfig").util.root_pattern({ "deno.json", "deno.jsonc", ".git" }),
+          root_dir = require('lspconfig').util.root_pattern({
+            'deno.json',
+            'deno.jsonc',
+            '.git',
+          }),
           single_file_support = false,
           settings = {},
         },
@@ -176,22 +210,29 @@ return {
 
       local ensure_installed = vim.tbl_keys(servers or {})
 
-      require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
-      require("mason-lspconfig").setup({
+      require('mason-tool-installer').setup({
+        ensure_installed = ensure_installed,
+      })
+      require('mason-lspconfig').setup({
         ensure_installed = {}, -- explicitly set to an empty table (Kickstart populates installs via mason-tool-installer)
         automatic_installation = true,
         handlers = {
           function(server_name)
             local server = servers[server_name] or {}
-            server.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
-            require("lspconfig")[server_name].setup(server)
+            server.capabilities = vim.tbl_deep_extend(
+              'force',
+              {},
+              capabilities,
+              server.capabilities or {}
+            )
+            require('lspconfig')[server_name].setup(server)
           end,
         },
       })
     end,
   },
   {
-    "neovim/nvim-lspconfig",
+    'neovim/nvim-lspconfig',
     opts = {
       servers = {
         gopls = {
@@ -226,7 +267,13 @@ return {
               usePlaceholders = true,
               completeUnimported = true,
               staticcheck = true,
-              directoryFilters = { "-.git", "-.vscode", "-.idea", "-.vscode-test", "-node_modules" },
+              directoryFilters = {
+                '-.git',
+                '-.vscode',
+                '-.idea',
+                '-.vscode-test',
+                '-node_modules',
+              },
               semanticTokens = true,
             },
           },
@@ -238,7 +285,8 @@ return {
           -- https://github.com/golang/go/issues/54531#issuecomment-1464982242
           LazyVim.lsp.on_attach(function(client, _)
             if not client.server_capabilities.semanticTokensProvider then
-              local semantic = client.config.capabilities.textDocument.semanticTokens
+              local semantic =
+                client.config.capabilities.textDocument.semanticTokens
               client.server_capabilities.semanticTokensProvider = {
                 full = true,
                 legend = {
@@ -248,7 +296,7 @@ return {
                 range = true,
               }
             end
-          end, "gopls")
+          end, 'gopls')
           -- end workaround
         end,
       },

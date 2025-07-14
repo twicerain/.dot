@@ -1,6 +1,6 @@
 return {
   {
-    "folke/tokyonight.nvim",
+    'folke/tokyonight.nvim',
     lazy = false,
     priority = 1000,
     -- config = function()
@@ -9,16 +9,16 @@ return {
     -- end,
   },
   {
-    "zenbones-theme/zenbones.nvim",
-    dependencies = "rktjmp/lush.nvim",
+    'zenbones-theme/zenbones.nvim',
+    dependencies = 'rktjmp/lush.nvim',
     lazy = false,
     priority = 1000,
     config = function()
-      vim.cmd.colorscheme("zenbones")
+      vim.cmd.colorscheme('zenbones')
     end,
   },
   {
-    "neanias/everforest-nvim",
+    'neanias/everforest-nvim',
     lazy = false,
     priority = 1000,
     -- config = function()

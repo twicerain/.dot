@@ -1,6 +1,6 @@
 return {
-  "folke/todo-comments.nvim",
-  dependencies = { "nvim-lua/plenary.nvim" },
+  'folke/todo-comments.nvim',
+  dependencies = { 'nvim-lua/plenary.nvim' },
   opts = {
     -- your configuration comes here
     -- or leave it empty to use the default settings
@@ -8,18 +8,18 @@ return {
   },
   keys = {
     {
-      "<leader>st",
+      '<leader>st',
       function()
         Snacks.picker.todo_comments()
       end,
-      desc = "Todo",
+      desc = 'Todo',
     },
     {
-      "<leader>sT",
+      '<leader>sT',
       function()
-        Snacks.picker.todo_comments({ keywords = { "TODO", "FIX", "FIXME" } })
+        Snacks.picker.todo_comments({ keywords = { 'TODO', 'FIX', 'FIXME' } })
       end,
-      desc = "Todo/Fix/Fixme",
+      desc = 'Todo/Fix/Fixme',
     },
   },
 }

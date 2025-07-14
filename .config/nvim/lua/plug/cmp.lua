@@ -1,21 +1,21 @@
 return {
   {
-    "saghen/blink.cmp",
-    event = "VimEnter",
-    version = "1.*",
+    'saghen/blink.cmp',
+    event = 'VimEnter',
+    version = '1.*',
     dependencies = { -- Snippet Engine
-      "rafamadriz/friendly-snippets",
-      "folke/lazydev.nvim",
+      'rafamadriz/friendly-snippets',
+      'folke/lazydev.nvim',
     },
     --- @module 'blink.cmp'
     --- @type blink.cmp.Config
     opts = {
       keymap = {
-        preset = "default",
+        preset = 'default',
       },
 
       appearance = {
-        nerd_font_variant = "mono",
+        nerd_font_variant = 'mono',
       },
       cmdline = {
         enabled = true,
@@ -46,23 +46,27 @@ return {
 
         documentation = {
           window = {
-            border = "rounded",
+            border = 'rounded',
           },
           auto_show = true,
           auto_show_delay_ms = 200,
         },
-        menu = { border = "rounded" },
+        menu = { border = 'rounded' },
       },
 
       sources = {
-        default = { "lsp", "path", "snippets", "lazydev", "buffer" },
+        default = { 'lsp', 'path', 'snippets', 'lazydev', 'buffer' },
         providers = {
-          lazydev = { name = "LazyDev", module = "lazydev.integrations.blink", score_offset = 100 },
+          lazydev = {
+            name = 'LazyDev',
+            module = 'lazydev.integrations.blink',
+            score_offset = 100,
+          },
         },
       },
 
-      snippets = { preset = "default" },
-      fuzzy = { implementation = "prefer_rust_with_warning" },
+      snippets = { preset = 'default' },
+      fuzzy = { implementation = 'prefer_rust_with_warning' },
 
       signature = { enabled = true },
     },
