@@ -12,26 +12,9 @@
   sort = version:refname
 
 [alias]
-  st = status -sb
   last = log -1 HEAD
-
-  a = add
-  cm = commit
-  am = commit --amend
-  wo = commit --amend --no-edit
   wip = "!git add -A && git commit -m 'WIP'"
-
-  co = checkout
-  cob = checkout -b
-  br = branch
-  cb = checkout -b
-
-  l = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --decorate --date=short --color --decorate
   la = log --graph --all --decorate --oneline
-
-  df = diff
-  dc = diff --cached
-
   undo = reset --soft HEAD~1
 
 [commit]
