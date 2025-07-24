@@ -64,19 +64,19 @@ return {
     },
     picker = {
       sources = {
-        ---@type snacks.picker.explorer.Config
-        explorer = {
-          replace_netrw = true,
-          auto_close = false,
-          hidden = true,
-          ignored = false,
-          layout = {
-            preset = 'sidebar',
-            layout = {
-              position = 'right',
-            },
-          },
-        },
+        -- ---@type snacks.picker.explorer.Config
+        -- explorer = {
+        --   replace_netrw = true,
+        --   auto_close = false,
+        --   hidden = true,
+        --   ignored = false,
+        --   layout = {
+        --     preset = 'sidebar',
+        --     layout = {
+        --       position = 'right',
+        --     },
+        --   },
+        -- },
         buffers = {
           preview = 'main',
           focus = 'list',
@@ -166,13 +166,13 @@ return {
       end,
       desc = 'Notification History',
     },
-    {
-      '<leader>e',
-      function()
-        Snacks.explorer()
-      end,
-      desc = 'File Explorer',
-    },
+    -- {
+    --   '<leader>e',
+    --   function()
+    --     Snacks.explorer()
+    --   end,
+    --   desc = 'File Explorer',
+    -- },
     -- find
     {
       '<leader>fb',

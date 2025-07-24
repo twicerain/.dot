@@ -1,6 +1,11 @@
 -- LSP Plugins
 return {
   {
+    'pmizio/typescript-tools.nvim',
+    dependencies = { 'nvim-lua/plenary.nvim', 'neovim/nvim-lspconfig' },
+    opts = {},
+  },
+  {
     'folke/lazydev.nvim',
     ft = 'lua',
     opts = {
@@ -132,7 +137,7 @@ return {
       ---@type vim.diagnostic.Opts
       vim.diagnostic.config({
         severity_sort = true,
-        float = { border = 'rounded', source = 'if_many' },
+        float = { border = 'rounded', source = true },
         underline = { severity = vim.diagnostic.severity.ERROR },
         -- signs = {
         --   text = {
@@ -194,6 +199,7 @@ return {
           single_file_support = false,
           settings = {},
         },
+        astro = {},
         jsonls = {
           settings = {
             json = {
@@ -206,6 +212,7 @@ return {
         },
         dockerls = {},
         docker_compose_language_service = {},
+        rust_analyzer = {},
       }
 
       local ensure_installed = vim.tbl_keys(servers or {})

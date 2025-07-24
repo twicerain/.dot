@@ -17,6 +17,8 @@ return {
         'vim',
         'vimdoc',
         'fish',
+        'astro',
+        'css',
       },
       auto_install = true,
       highlight = {

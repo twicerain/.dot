@@ -52,6 +52,10 @@ abbr ssh "TERM=xterm-256color ssh"
 
 abbr dup "docker compose up --build --remove-orphans -d"
 
+# deno
+abbr dr "deno run"
+abbr dra "deno run --allow-all"
+
 # aliases
 alias ls "eza --color=always --icons --group-directories-first"
 alias la "eza --color=always --icons --group-directories-first --all"
