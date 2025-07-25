@@ -1,4 +1,5 @@
 require('opts')
+require('globals')
 require('keys')
 require('boot')
 require('acmd')

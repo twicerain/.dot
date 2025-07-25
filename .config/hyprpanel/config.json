@@ -379,7 +379,7 @@
   "theme.bar.buttons.modules.worldclock.icon_background": "#FFFFFF",
   "theme.bar.buttons.modules.worldclock.icon": "#FFFFFF",
   "theme.bar.buttons.modules.worldclock.border": "#FFFFFF",
-  "wallpaper.image": "",
+  "wallpaper.image": "/home/rain/.config/wall.png",
   "theme.bar.buttons.enableBorders": false,
   "theme.bar.border.location": "none",
   "theme.bar.border.width": "0.15em",
@@ -438,5 +438,18 @@
   "menus.volume.raiseMaximumVolume": true,
   "menus.clock.time.military": true,
   "menus.clock.time.hideSeconds": false,
-  "menus.clock.weather.enabled": false
+  "menus.clock.weather.enabled": false,
+  "menus.dashboard.powermenu.avatar.image": "/home/rain/.config/wall.png",
+  "theme.bar.menus.menu.dashboard.profile.size": "8.5em",
+  "menus.dashboard.powermenu.confirmation": false,
+  "menus.dashboard.controls.enabled": false,
+  "menus.dashboard.stats.enabled": false,
+  "menus.dashboard.shortcuts.left.shortcut1.command": "uwsm app -- zen-browser",
+  "menus.dashboard.shortcuts.left.shortcut1.tooltip": "zen",
+  "menus.dashboard.shortcuts.left.shortcut4.tooltip": "dir",
+  "menus.dashboard.shortcuts.left.shortcut4.command": "nautilus",
+  "menus.dashboard.shortcuts.left.shortcut3.tooltip": "",
+  "menus.dashboard.shortcuts.left.shortcut3.command": "",
+  "menus.dashboard.shortcuts.left.shortcut2.tooltip": "",
+  "menus.dashboard.shortcuts.left.shortcut2.command": ""
 }

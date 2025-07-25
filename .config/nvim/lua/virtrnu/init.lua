@@ -25,9 +25,12 @@ local ignored_buftypes = {
   'terminal',
   'quickfix',
 }
-local function is_disabled_buf(bufnr)
+
+local function is_ignored(bufnr)
   local bt = vim.bo[bufnr].buftype
+  local ft = vim.bo[bufnr].filetype
   return vim.tbl_contains(ignored_buftypes, bt)
+    or vim.tbl_contains(vim.g.ignored_filetypes, ft)
 end
 
 ---@type Config
@@ -37,7 +40,7 @@ function M.update(bufnr)
   if
     not config.enabled
     or not vim.api.nvim_buf_is_loaded(bufnr)
-    or is_disabled_buf(bufnr)
+    or is_ignored(bufnr)
   then
     return
   end

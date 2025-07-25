@@ -38,7 +38,7 @@ abbr :q exit
 abbr lg lazygit
 abbr ld lazydocker
 
-abbr grep rg
+# abbr grep rg
 abbr find fd
 abbr se "sudo systemctl enable --now"
 abbr sd "sudo systemctl disable --now"
