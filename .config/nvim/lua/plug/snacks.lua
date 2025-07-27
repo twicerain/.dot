@@ -446,21 +446,21 @@ return {
     },
     -- LSP
     {
-      'gd',
+      'grd',
       function()
         Snacks.picker.lsp_definitions()
       end,
       desc = 'Goto Definition',
     },
     {
-      'gD',
+      'grD',
       function()
         Snacks.picker.lsp_declarations()
       end,
       desc = 'Goto Declaration',
     },
     {
-      'gr',
+      'grr',
       function()
         Snacks.picker.lsp_references()
       end,
@@ -475,7 +475,7 @@ return {
       desc = 'Goto Implementation',
     },
     {
-      'gy',
+      'gry',
       function()
         Snacks.picker.lsp_type_definitions()
       end,
@@ -537,6 +537,11 @@ return {
         Snacks.bufdelete()
       end,
       desc = 'Delete Buffer',
+    },
+    {
+      '<leader>cr',
+      vim.lsp.buf.rename,
+      desc = 'Rename File',
     },
     {
       '<leader>cR',

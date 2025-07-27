@@ -1,6 +1,4 @@
-local g = vim.g
-
-g.ignored_filetypes = {
+vim.g.ignored_filetypes = {
   'PlenaryTestPopup',
   'checkhealth',
   'dbout',
@@ -17,4 +15,8 @@ g.ignored_filetypes = {
   'startuptime',
   'tsplayground',
   'oil',
+}
+
+vim.g.markdown_fenced_languages = {
+  'ts=typescript',
 }
