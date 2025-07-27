@@ -8,12 +8,11 @@ return {
   opts = {
     bigfile = { enabled = true },
     dashboard = {
-      -- enabled = false,
+      enabled = true,
       width = 60,
       preset = {
-        -- ---@type snacks.dashboard.Section
-        -- startup = { section },
         header = 'amk',
+        ---@type snacks.dashboard.Item
         keys = {
           {
             icon = ' ',
@@ -46,37 +45,26 @@ return {
       },
       sections = {
         { section = 'header' },
-        {
-          enabled = false,
-          section = 'terminal',
-          height = select(2, vim.fn.system('pretty_git_stat'):gsub('\n', '\n'))
-            + 1,
-          cmd = 'pretty_git_stat',
-          ttl = 0,
-          -- enabled = function()
-          --   return Snacks.git.get_root() ~= nil
-          -- end,
-        },
         { icon = ' ', section = 'recent_files', padding = 1 },
         { section = 'keys', padding = 1 },
-        { section = 'startup' },
+        ---@type snacks.dashboard.Section
+        {
+          section = 'terminal',
+          padding = 3,
+          width = 59,
+          height = math.min(select(2, vim.fn.system('pretty_git_stat'):gsub('\n', '\n')), 10),
+          cmd = 'pretty_git_stat',
+          ttl = 0,
+          enabled = function()
+            return Snacks.git.get_root() ~= nil and select(2, vim.fn.system('pretty_git_stat'):gsub('\n', '\n')) ~= 1
+          end,
+        },
+
+        { section = 'startup', padding = 1 },
       },
     },
     picker = {
       sources = {
-        -- ---@type snacks.picker.explorer.Config
-        -- explorer = {
-        --   replace_netrw = true,
-        --   auto_close = false,
-        --   hidden = true,
-        --   ignored = false,
-        --   layout = {
-        --     preset = 'sidebar',
-        --     layout = {
-        --       position = 'right',
-        --     },
-        --   },
-        -- },
         buffers = {
           preview = 'main',
           focus = 'list',
@@ -101,7 +89,6 @@ return {
     },
     input = { enabled = true },
     git = { enabled = true },
-    ---@type snacks.notifier.Config
     notifier = {
       enabled = true,
       timeout = 3000,
@@ -129,6 +116,36 @@ return {
       },
     },
   },
+  init = function()
+    vim.api.nvim_create_autocmd('User', {
+      pattern = 'VeryLazy',
+      callback = function()
+        -- Setup some globals for debugging (lazy-loaded)
+        _G.dd = function(...)
+          Snacks.debug.inspect(...)
+        end
+        _G.bt = function()
+          Snacks.debug.backtrace()
+        end
+        vim.print = _G.dd -- Override print to use snacks for `:=` command
+
+        -- Create some toggle mappings
+        Snacks.toggle.option('spell', { name = 'Spelling' }):map('<leader>us')
+        Snacks.toggle.option('wrap', { name = 'Wrap' }):map('<leader>uw')
+        Snacks.toggle.option('relativenumber', { name = 'Relative Number' }):map('<leader>uL')
+        Snacks.toggle.diagnostics():map('<leader>ud')
+        Snacks.toggle.line_number():map('<leader>ul')
+        Snacks.toggle
+          .option('conceallevel', { off = 0, on = vim.o.conceallevel > 0 and vim.o.conceallevel or 2 })
+          :map('<leader>uc')
+        Snacks.toggle.treesitter():map('<leader>uT')
+        Snacks.toggle.option('background', { off = 'light', on = 'dark', name = 'Dark Background' }):map('<leader>ub')
+        Snacks.toggle.inlay_hints():map('<leader>uh')
+        Snacks.toggle.indent():map('<leader>ug')
+        Snacks.toggle.dim():map('<leader>uD')
+      end,
+    })
+  end,
   keys = {
     -- Top Pickers & Explorer
     {
@@ -166,13 +183,6 @@ return {
       end,
       desc = 'Notification History',
     },
-    -- {
-    --   '<leader>e',
-    --   function()
-    --     Snacks.explorer()
-    --   end,
-    --   desc = 'File Explorer',
-    -- },
     -- find
     {
       '<leader>fb',
@@ -319,13 +329,6 @@ return {
       desc = 'Autocmds',
     },
     {
-      '<leader>sb',
-      function()
-        Snacks.picker.lines()
-      end,
-      desc = 'Buffer Lines',
-    },
-    {
       '<leader>sc',
       function()
         Snacks.picker.command_history()
@@ -446,27 +449,28 @@ return {
     },
     -- LSP
     {
-      'grd',
+      'gd',
       function()
         Snacks.picker.lsp_definitions()
       end,
       desc = 'Goto Definition',
     },
     {
-      'grD',
+      'gD',
       function()
         Snacks.picker.lsp_declarations()
       end,
       desc = 'Goto Declaration',
     },
     {
-      'grr',
+      'gr',
       function()
         Snacks.picker.lsp_references()
       end,
       nowait = true,
       desc = 'References',
     },
+    { 'grn', vim.lsp.buf.rename, nowait = true, desc = 'References' },
     {
       'gI',
       function()
@@ -475,7 +479,7 @@ return {
       desc = 'Goto Implementation',
     },
     {
-      'gry',
+      'gy',
       function()
         Snacks.picker.lsp_type_definitions()
       end,
@@ -538,11 +542,7 @@ return {
       end,
       desc = 'Delete Buffer',
     },
-    {
-      '<leader>cr',
-      vim.lsp.buf.rename,
-      desc = 'Rename File',
-    },
+    { '<leader>cr', vim.lsp.buf.rename, desc = 'Rename File' },
     {
       '<leader>cR',
       function()
@@ -559,13 +559,6 @@ return {
       mode = { 'n', 'v' },
     },
     {
-      '<leader>gg',
-      function()
-        Snacks.lazygit()
-      end,
-      desc = 'Lazygit',
-    },
-    {
       '<leader>un',
       function()
         Snacks.notifier.hide()
@@ -578,13 +571,6 @@ return {
         Snacks.terminal()
       end,
       desc = 'Toggle Terminal',
-    },
-    {
-      '<c-_>',
-      function()
-        Snacks.terminal()
-      end,
-      desc = 'which_key_ignore',
     },
     {
       ']]',
@@ -621,44 +607,4 @@ return {
       end,
     },
   },
-  init = function()
-    vim.api.nvim_create_autocmd('User', {
-      pattern = 'VeryLazy',
-      callback = function()
-        -- Setup some globals for debugging (lazy-loaded)
-        _G.dd = function(...)
-          Snacks.debug.inspect(...)
-        end
-        _G.bt = function()
-          Snacks.debug.backtrace()
-        end
-        vim.print = _G.dd -- Override print to use snacks for `:=` command
-
-        -- Create some toggle mappings
-        Snacks.toggle.option('spell', { name = 'Spelling' }):map('<leader>us')
-        Snacks.toggle.option('wrap', { name = 'Wrap' }):map('<leader>uw')
-        Snacks.toggle
-          .option('relativenumber', { name = 'Relative Number' })
-          :map('<leader>uL')
-        Snacks.toggle.diagnostics():map('<leader>ud')
-        Snacks.toggle.line_number():map('<leader>ul')
-        Snacks.toggle
-          .option(
-            'conceallevel',
-            { off = 0, on = vim.o.conceallevel > 0 and vim.o.conceallevel or 2 }
-          )
-          :map('<leader>uc')
-        Snacks.toggle.treesitter():map('<leader>uT')
-        Snacks.toggle
-          .option(
-            'background',
-            { off = 'light', on = 'dark', name = 'Dark Background' }
-          )
-          :map('<leader>ub')
-        Snacks.toggle.inlay_hints():map('<leader>uh')
-        Snacks.toggle.indent():map('<leader>ug')
-        Snacks.toggle.dim():map('<leader>uD')
-      end,
-    })
-  end,
 }

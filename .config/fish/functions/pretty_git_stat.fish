@@ -7,9 +7,9 @@ function pretty_git_stat
     set -l NORM (set_color normal)
 
     # icon + branch
-    printf '%s %s%s%s\n' $CYAN $MAG (git branch --show-current) $NORM
+    set -l output "$CYAN $MAG"(git branch --show-current)"$NORM"
 
-    # diff --stat with colours
+    # Process diff --stat lines
     git -c color.ui=always diff --stat --color=always \
         | while read -l line
         if string match -qr '^\s*[0-9]+ files? changed' -- $line
@@ -26,6 +26,9 @@ function pretty_git_stat
                 "$YEL\\1$NORM|" -- $line)
         end
 
-        printf '%s\n' $line
+        set output $output $line
     end
+
+    # Join all lines with newlines but no trailing newline
+    string join \n $output
 end
