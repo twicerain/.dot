@@ -250,8 +250,8 @@ default_mode "locked"
 default_shell "fish"
 default_layout "compact"
 
-session_name "dev"
-attach_to_session true
+// session_name "dev"
+// attach_to_session true
 
 show_startup_tips false
 show_release_notes true
