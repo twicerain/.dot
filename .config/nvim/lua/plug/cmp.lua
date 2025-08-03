@@ -17,6 +17,7 @@ return {
       appearance = {
         nerd_font_variant = 'mono',
       },
+
       cmdline = {
         enabled = true,
         completion = {
@@ -51,7 +52,15 @@ return {
           auto_show = true,
           auto_show_delay_ms = 200,
         },
-        menu = { border = 'rounded' },
+        menu = {
+          border = 'rounded',
+          draw = {
+            columns = {
+              { 'kind_icon', 'label', 'label_description', gap = 1 },
+              { 'kind' },
+            },
+          },
+        },
       },
 
       sources = {

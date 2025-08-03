@@ -110,15 +110,29 @@ return {
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
         'stylua',
+        'typescript-language-server',
       })
 
       require('mason-tool-installer').setup({
         ensure_installed = ensure_installed,
       })
 
-      for name, cfg in pairs(servers) do
-        cfg.capabilities =
-          vim.tbl_deep_extend('force', {}, capabilities, cfg.capabilities or {})
+      ---@type {[string]: lspconfig.Config}
+      local remote_servers = {
+        gdscript = {
+          on_attach = function(client, _bufnr)
+            local pipe_path = client.root_dir .. '/server.pipe'
+
+            if vim.uv.fs_stat(pipe_path) then return end
+
+            local success, server_addr = pcall(vim.fn.serverstart, pipe_path)
+            if not success then vim.notify('Failed to start Godot server pipe: ' .. tostring(server_addr), 'warn') end
+          end,
+        },
+      }
+
+      for name, cfg in pairs(vim.tbl_deep_extend('force', servers, remote_servers)) do
+        cfg.capabilities = vim.tbl_deep_extend('force', {}, capabilities, cfg.capabilities or {})
         require('lspconfig')[name].setup(cfg)
       end
     end,
@@ -129,6 +143,10 @@ return {
     opts = {
       single_file_support = false,
       workspace_required = true,
+      suggest = {
+        names = false,
+        autoImports = false,
+      },
     },
   },
 }

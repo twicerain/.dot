@@ -1,25 +1,19 @@
 -- autocmds
-local function augroup(name)
-  return vim.api.nvim_create_augroup('rain' .. name, { clear = true })
-end
+local function augroup(name) return vim.api.nvim_create_augroup('rain' .. name, { clear = true }) end
 
 -- Toggle relative line numbers off in insert mode
 local toggle_ln_aug = augroup('toggle_ln')
 vim.api.nvim_create_autocmd({ 'InsertLeave' }, {
   group = toggle_ln_aug,
   callback = function()
-    if vim.wo.nu then
-      vim.wo.rnu = true
-    end
+    if vim.wo.nu then vim.wo.rnu = true end
   end,
 })
 
 vim.api.nvim_create_autocmd({ 'InsertEnter' }, {
   group = toggle_ln_aug,
   callback = function()
-    if vim.wo.nu then
-      vim.wo.rnu = false
-    end
+    if vim.wo.nu then vim.wo.rnu = false end
   end,
 })
 
@@ -27,18 +21,14 @@ vim.api.nvim_create_autocmd({ 'InsertEnter' }, {
 vim.api.nvim_create_autocmd({ 'FocusGained', 'TermClose', 'TermLeave' }, {
   group = augroup('checktime'),
   callback = function()
-    if vim.o.buftype ~= 'nofile' then
-      vim.cmd('checktime')
-    end
+    if vim.o.buftype ~= 'nofile' then vim.cmd('checktime') end
   end,
 })
 
 -- Highlight on yank
 vim.api.nvim_create_autocmd('TextYankPost', {
   group = augroup('highlight_yank'),
-  callback = function()
-    vim.hl.on_yank()
-  end,
+  callback = function() vim.hl.on_yank() end,
 })
 
 -- resize splits if window got resized
@@ -57,17 +47,11 @@ vim.api.nvim_create_autocmd('BufReadPost', {
   callback = function(event)
     local exclude = { 'gitcommit' }
     local buf = event.buf
-    if
-      vim.tbl_contains(exclude, vim.bo[buf].filetype) or vim.b[buf].last_loc
-    then
-      return
-    end
+    if vim.tbl_contains(exclude, vim.bo[buf].filetype) or vim.b[buf].last_loc then return end
     vim.b[buf].last_loc = true
     local mark = vim.api.nvim_buf_get_mark(buf, '"')
     local lcount = vim.api.nvim_buf_line_count(buf)
-    if mark[1] > 0 and mark[1] <= lcount then
-      pcall(vim.api.nvim_win_set_cursor, 0, mark)
-    end
+    if mark[1] > 0 and mark[1] <= lcount then pcall(vim.api.nvim_win_set_cursor, 0, mark) end
   end,
 })
 
@@ -98,9 +82,7 @@ vim.api.nvim_create_autocmd('FileType', {
 vim.api.nvim_create_autocmd('FileType', {
   group = augroup('man_unlisted'),
   pattern = { 'man' },
-  callback = function(event)
-    vim.bo[event.buf].buflisted = false
-  end,
+  callback = function(event) vim.bo[event.buf].buflisted = false end,
 })
 
 -- wrap and check for spell in text filetypes
@@ -117,18 +99,14 @@ vim.api.nvim_create_autocmd('FileType', {
 vim.api.nvim_create_autocmd({ 'FileType' }, {
   group = augroup('json_conceal'),
   pattern = { 'json', 'jsonc', 'json5' },
-  callback = function()
-    vim.opt_local.conceallevel = 0
-  end,
+  callback = function() vim.opt_local.conceallevel = 0 end,
 })
 
 -- Auto create dir when saving a file, in case some intermediate directory does not exist
 vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
   group = augroup('auto_create_dir'),
   callback = function(event)
-    if event.match:match('^%w%w+:[\\/][\\/]') then
-      return
-    end
+    if event.match:match('^%w%w+:[\\/][\\/]') then return end
     local file = vim.uv.fs_realpath(event.match) or event.match
     vim.fn.mkdir(vim.fn.fnamemodify(file, ':p:h'), 'p')
   end,
@@ -150,13 +128,7 @@ vim.api.nvim_create_autocmd({ 'CursorMoved', 'DiagnosticChanged' }, {
     for _, namespace in pairs(vim.diagnostic.get_namespaces()) do
       local ns_id = namespace.user_data.virt_text_ns
       if ns_id then
-        local extmarks = vim.api.nvim_buf_get_extmarks(
-          event.buf,
-          ns_id,
-          { lnum, 0 },
-          { lnum, -1 },
-          {}
-        )
+        local extmarks = vim.api.nvim_buf_get_extmarks(event.buf, ns_id, { lnum, 0 }, { lnum, -1 }, {})
         for _, extmark in pairs(extmarks) do
           local id = extmark[1]
           vim.api.nvim_buf_del_extmark(event.buf, ns_id, id)
@@ -179,13 +151,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
     --
     -- When you move your cursor, the highlights will be cleared (the second autocommand).
     local client = vim.lsp.get_client_by_id(event.data.client_id)
-    if
-      client
-      and client:supports_method(
-        vim.lsp.protocol.Methods.textDocument_documentHighlight,
-        event.buf
-      )
-    then
+    if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight, event.buf) then
       local hl_group = augroup('lsphighlight')
       vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
         buffer = event.buf,
@@ -212,21 +178,16 @@ vim.api.nvim_create_autocmd('LspAttach', {
     end
 
     -- toggle inline hints
-    if
-      client
-      and client:supports_method(
-        vim.lsp.protocol.Methods.textDocument_inlayHint,
-        event.buf
+    if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint, event.buf) then
+      vim.keymap.set(
+        'n',
+        '<leader>th',
+        function() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf })) end,
+        {
+          buffer = event.buf,
+          desc = 'LSP: toggle Inlay hints',
+        }
       )
-    then
-      vim.keymap.set('n', '<leader>th', function()
-        vim.lsp.inlay_hint.enable(
-          not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf })
-        )
-      end, {
-        buffer = event.buf,
-        desc = 'LSP: toggle Inlay hints',
-      })
     end
   end,
 })

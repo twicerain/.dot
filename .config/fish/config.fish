@@ -16,6 +16,7 @@ set -gx SUDO_EDITOR $EDITOR
 set -gx MANPAGER "nvim +Man!"
 
 set -gx STARSHIP_CONFIG $HOME/.config/starship/starship.toml
+set --universal nvm_default_version v24.5.0
 
 # abbreviations
 abbr .. "cd .."
@@ -65,6 +66,8 @@ alias fzfp "fzf --style full --preview 'bat --color=always --style=numbers --lin
 alias inv "fzf --style full --preview 'bat --color=always --style=numbers --line-range=256 {}' --bind 'focus:transform-header:file --brief {}' --bind 'enter:become(nvim {})'"
 
 alias lazydot "lazygit --git-dir=$HOME/.dot --work-tree=$HOME"
+
+alias wallpaper "~/.config/hyprland-de/scripts/wallpaper.sh"
 
 # start hyprland
 if uwsm check may-start; and uwsm select
