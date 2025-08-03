@@ -105,6 +105,7 @@ return {
         docker_compose_language_service = {},
         rust_analyzer = {},
         gopls = {},
+        fish_lsp = {},
       }
 
       local ensure_installed = vim.tbl_keys(servers or {})

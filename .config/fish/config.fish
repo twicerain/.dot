@@ -79,6 +79,8 @@ if status is-interactive
     starship init fish | source
     zoxide init fish | source
     fzf --fish | source
+
+    set ZELLIJ_AUTO_EXIT true
     eval (zellij setup --generate-auto-start fish | string collect)
 end
 
