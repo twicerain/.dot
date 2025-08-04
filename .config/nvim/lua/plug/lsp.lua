@@ -118,7 +118,20 @@ return {
         fish_lsp = {},
         qmlls = {},
         bashls = {},
-        tailwindcss = {},
+        tailwindcss = {
+          settings = {
+            tailwindCSS = {
+              classAttributes = {
+                'class',
+                'className',
+                'classNames',
+                'class:list',
+                'classList',
+                'ngClass',
+              },
+            },
+          },
+        },
         emmet_language_server = {
           filetypes = {
             'css',
@@ -141,8 +154,7 @@ return {
         css_variables = {},
         cssmodules_ls = {},
         postgres_lsp = {},
-        qmlls = {},
-        bashls = {},
+        marksman = {},
       }
 
       local ensure_installed = vim.tbl_keys(servers or {})
@@ -165,13 +177,21 @@ return {
             if vim.uv.fs_stat(pipe_path) then return end
 
             local success, server_addr = pcall(vim.fn.serverstart, pipe_path)
-            if not success then vim.notify('Failed to start Godot server pipe: ' .. tostring(server_addr), 'warn') end
+            if not success then
+              vim.notify(
+                'Failed to start Godot server pipe: ' .. tostring(server_addr),
+                'warn'
+              )
+            end
           end,
         },
       }
 
-      for name, cfg in pairs(vim.tbl_deep_extend('force', servers, remote_servers)) do
-        cfg.capabilities = vim.tbl_deep_extend('force', {}, capabilities, cfg.capabilities or {})
+      for name, cfg in
+        pairs(vim.tbl_deep_extend('force', servers, remote_servers))
+      do
+        cfg.capabilities =
+          vim.tbl_deep_extend('force', {}, capabilities, cfg.capabilities or {})
         require('lspconfig')[name].setup(cfg)
       end
     end,

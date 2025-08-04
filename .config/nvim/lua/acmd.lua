@@ -153,12 +153,19 @@ vim.api.nvim_create_autocmd({ 'CursorMoved', 'DiagnosticChanged' }, {
 vim.api.nvim_create_autocmd('LspAttach', {
   group = augroup('lspattach'),
   callback = function(event)
+    local client = vim.lsp.get_client_by_id(event.data.client_id)
+
+    if client and client:supports_method('textDocument/documentColor') then
+      vim.lsp.document_color.enable(true, event.buf, {
+        style = 'virtual',
+      })
+    end
+
     -- The following two autocommands are used to highlight references of the
     -- word under your cursor when your cursor rests there for a little while.
     --    See `:help CursorHold` for information about when this is executed
     --
     -- When you move your cursor, the highlights will be cleared (the second autocommand).
-    local client = vim.lsp.get_client_by_id(event.data.client_id)
     if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight, event.buf) then
       local hl_group = augroup('lsphighlight')
       vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {

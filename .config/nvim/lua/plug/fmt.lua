@@ -21,7 +21,7 @@ local prettierlangs = {
 local get_prettier_formatters = function(langs)
   local ft_formatters = {}
   for _, ft in ipairs(langs) do
-    ft_formatters[ft] = { 'prettierd', 'prettier', stop_after_first = false }
+    ft_formatters[ft] = { 'prettierd', 'prettier', stop_after_first = true }
   end
 
   return ft_formatters
@@ -43,7 +43,7 @@ return {
   ---@type conform.setupOpts
   opts = {
     notify_on_error = false,
-    format_on_save = { timeout_ms = 500, lsp_format = 'fallback' },
+    format_on_save = { timeout_ms = 1000, lsp_format = 'fallback' },
     formatters_by_ft = vim.tbl_extend('force', {
       lua = { 'stylua' },
     }, get_prettier_formatters(prettierlangs)),

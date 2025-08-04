@@ -41,6 +41,8 @@ abbr :Oil 'nvim -c ":Oil"'
 abbr lg lazygit
 abbr ld lazydocker
 
+abbr ff fastfetch
+
 # abbr grep rg
 abbr find fd
 abbr se "sudo systemctl enable --now"

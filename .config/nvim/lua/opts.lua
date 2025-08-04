@@ -92,7 +92,8 @@ vim.o.shiftwidth = 2 -- Size of an indent
 vim.opt.shortmess:append({ W = true, I = true, c = true, C = true })
 vim.o.sidescrolloff = 8 -- Columns of context
 vim.o.signcolumn = 'yes' -- Always show the signcolumn, otherwise it would shift the text each time
-vim.opt.spelllang = { 'en' }
+vim.o.spell = true
+vim.opt.spelllang = { 'en_au' }
 vim.o.splitkeep = 'screen'
 vim.o.statuscolumn = [[%!v:lua.require'snacks.statuscolumn'.get()]]
 vim.o.undolevels = 10000
