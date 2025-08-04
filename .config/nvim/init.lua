@@ -6,7 +6,9 @@ require('acmd')
 
 -- custom plugins
 require('virtrnu').setup({
-  freq = 5,
-  padding = 4,
+  freq = 1,
+  padding = 1,
   align = 'left',
 })
+
+vim.keymap.set('n', '<leader>tv', '<CMD>Virtrnu toggle<CR>')

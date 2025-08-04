@@ -1,13 +1,40 @@
+local prettierlangs = {
+  'astro',
+  'css',
+  'graphql',
+  'handlebars',
+  'html',
+  'javascript',
+  'javascriptreact',
+  'json',
+  'jsonc',
+  'less',
+  'markdown',
+  'markdown.mdx',
+  'scss',
+  'typescript',
+  'typescriptreact',
+  'vue',
+  'yaml',
+}
+
+local get_prettier_formatters = function(langs)
+  local ft_formatters = {}
+  for _, ft in ipairs(langs) do
+    ft_formatters[ft] = { 'prettierd', 'prettier', stop_after_first = true }
+  end
+
+  return ft_formatters
+end
+
 return {
   'stevearc/conform.nvim',
   event = { 'BufWritePre' },
   cmd = { 'ConformInfo' },
   keys = {
     {
-      '<leader>f',
-      function()
-        require('conform').format({ async = true, lsp_format = 'fallback' })
-      end,
+      '<leader>cf',
+      function() require('conform').format({ async = true, lsp_format = 'fallback' }) end,
       mode = '',
       desc = '[F]ormat buffer',
     },
@@ -16,11 +43,9 @@ return {
   ---@type conform.setupOpts
   opts = {
     notify_on_error = false,
-    format_on_save = { timeout_ms = 500, lsp_format = 'fallback' },
-    formatters_by_ft = {
+    format_on_save = { timeout_ms = 1000, lsp_format = 'fallback' },
+    formatters_by_ft = vim.tbl_extend('force', {
       lua = { 'stylua' },
-      javascript = { 'prettierd', 'prettier', stop_after_first = true },
-      astro = { 'prettierd', 'prettier', stop_after_first = true },
-    },
+    }, get_prettier_formatters(prettierlangs)),
   },
 }

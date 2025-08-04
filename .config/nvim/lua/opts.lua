@@ -92,7 +92,8 @@ vim.o.shiftwidth = 2 -- Size of an indent
 vim.opt.shortmess:append({ W = true, I = true, c = true, C = true })
 vim.o.sidescrolloff = 8 -- Columns of context
 vim.o.signcolumn = 'yes' -- Always show the signcolumn, otherwise it would shift the text each time
-vim.opt.spelllang = { 'en' }
+vim.o.spell = true
+vim.opt.spelllang = { 'en_au' }
 vim.o.splitkeep = 'screen'
 vim.o.statuscolumn = [[%!v:lua.require'snacks.statuscolumn'.get()]]
 vim.o.undolevels = 10000
@@ -105,6 +106,15 @@ vim.o.smoothscroll = true
 vim.o.foldexpr = "v:lua.require'lazyvim.util'.ui.foldexpr()"
 vim.o.foldmethod = 'expr'
 vim.o.foldtext = ''
+vim.o.swapfile = false
 
 -- Fix markdown indentation settings
 vim.g.markdown_recommended_style = 0
+
+vim.filetype.add({
+  pattern = {
+    ['.*compose.*%.ya?ml'] = 'yaml.docker-compose',
+  },
+})
+
+vim.lsp.log.set_level(vim.log.levels.OFF)

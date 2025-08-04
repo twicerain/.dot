@@ -20,6 +20,10 @@ return {
 
       cmdline = {
         enabled = true,
+        keymap = {
+          ['<Tab>'] = { 'accept' },
+          ['<CR>'] = { 'accept_and_enter', 'fallback' },
+        },
         completion = {
           ghost_text = {
             enabled = true,
@@ -37,6 +41,9 @@ return {
       },
 
       completion = {
+        accept = {
+          auto_brackets = { enabled = false },
+        },
         ghost_text = {
           enabled = true,
           show_with_selection = true,
@@ -70,6 +77,13 @@ return {
             name = 'LazyDev',
             module = 'lazydev.integrations.blink',
             score_offset = 100,
+          },
+          cmdline = {
+            min_keyword_length = function(ctx)
+              -- when typing a command, only show when the keyword is 3 characters or longer
+              if ctx.mode == 'cmdline' and string.find(ctx.line, ' ') == nil then return 3 end
+              return 0
+            end,
           },
         },
       },

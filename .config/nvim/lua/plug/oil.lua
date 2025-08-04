@@ -42,15 +42,13 @@ return {
       show_hidden = true,
       is_always_hidden = function(name, _)
         if vim.g.is_godot_project then
-          if vim.endswith(name, '.uid') or name == 'server.pipe' then
-            return true
-          end
+          if vim.endswith(name, '.uid') or name == 'server.pipe' then return true end
         end
         return false
       end,
     },
   },
-  dependencies = { { 'echasnovski/mini.icons', opts = {} } },
+  dependencies = { { 'nvim-mini/mini.icons', opts = {} } },
   lazy = false,
   keys = {
     {

@@ -7,14 +7,14 @@ set -g fish_cursor_replace underscore
 set -g fish_cursor_external line
 set -g fish_cursor_visual block
 
-bind --mode insert ctrl-y accept-autosuggestion
+bind --mode insert \cy accept-autosuggestion
 
 # exports
+set -gx BROWSER explorer.exe
 set -gx EDITOR (which nvim)
 set -gx VISUAL $EDITOR
 set -gx SUDO_EDITOR $EDITOR
 set -gx MANPAGER "nvim +Man!"
-
 set -gx STARSHIP_CONFIG $HOME/.config/starship/starship.toml
 set --universal nvm_default_version v24.5.0
 
@@ -35,9 +35,14 @@ abbr vi nvim
 abbr v nvim
 abbr nv nvim
 abbr :q exit
+abbr :w clear
+abbr :oil 'nvim -c ":Oil"'
+abbr :Oil 'nvim -c ":Oil"'
 
 abbr lg lazygit
 abbr ld lazydocker
+
+abbr ff fastfetch
 
 # abbr grep rg
 abbr find fd
@@ -63,14 +68,14 @@ alias la "eza --color=always --icons --group-directories-first --all"
 alias ll "eza --color=always --icons --group-directories-first --all --long"
 
 alias fzfp "fzf --style full --preview 'bat --color=always --style=numbers --line-range=256 {}' --bind 'focus:transform-header:file --brief {}'"
-alias inv "fzf --style full --preview 'bat --color=always --style=numbers --line-range=256 {}' --bind 'focus:transform-header:file --brief {}' --bind 'enter:become(nvim {})'"
+alias inv "fzf --style full --preview 'bat --color=always --style=numbers' --bind 'focus:transform-header:file --brief {}' --bind 'enter:become(nvim {})'"
 
 alias lazydot "lazygit --git-dir=$HOME/.dot --work-tree=$HOME"
 
 alias wallpaper "~/.config/hyprland-de/scripts/wallpaper.sh"
 
 # start hyprland
-if uwsm check may-start; and uwsm select
+if command -q uwsm; and uwsm check may-start; and uwsm select
     exec uwsm start default
 end
 

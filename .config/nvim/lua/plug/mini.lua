@@ -1,6 +1,6 @@
 return {
   {
-    'echasnovski/mini.pairs',
+    'nvim-mini/mini.pairs',
     opts = {
       modes = { insert = true, command = true, terminal = false },
       skip_ts = { 'string' },
@@ -9,13 +9,13 @@ return {
     },
   },
   {
-    'echasnovski/mini.ai',
+    'nvim-mini/mini.ai',
   },
   {
-    'echasnovski/mini.operators',
+    'nvim-mini/mini.operators',
   },
   {
-    'echasnovski/mini.surround',
+    'nvim-mini/mini.surround',
     opts = {
       mappings = {
         add = 'gsa',

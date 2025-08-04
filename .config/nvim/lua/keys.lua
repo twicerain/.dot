@@ -159,3 +159,39 @@ if vim.fn.has('nvim-0.11') == 0 then
     { expr = true, desc = 'Jump Previous' }
   )
 end
+
+-- md table alignment
+local format_table = '!tr -s " " | column -t -s "|" -o "|"<cr>'
+local select_current_table = function()
+  local ts = vim.treesitter
+  local bufnr = vim.api.nvim_get_current_buf()
+  local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+  row = row - 1
+
+  local node = ts.get_node({ bufnr = bufnr, pos = { row, col } })
+
+  if not node then
+    print('No node found at cursor')
+    return
+  end
+
+  while node do
+    if node:type() == 'pipe_table' then
+      local start_row, start_col, end_row, end_col = node:range()
+
+      print(start_row .. ':' .. start_col, end_row .. ':' .. end_col)
+
+      vim.api.nvim_win_set_cursor(0, { start_row + 1, start_col })
+      vim.cmd('normal! V')
+      vim.api.nvim_win_set_cursor(0, { end_row, end_col })
+
+      return
+    end
+    node = node:parent()
+  end
+
+  print('no table to format')
+end
+
+vim.keymap.set('n', 'vaT', select_current_table, { desc = 'Select markdown table' })
+map('v', '<leader>ct', format_table, { desc = 'Format markdown tables' })

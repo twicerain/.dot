@@ -101,7 +101,7 @@ return {
     },
     quickfile = { enabled = true },
     scope = { enabled = true },
-    scroll = { enabled = true },
+    scroll = { enabled = false },
     statuscolumn = { enabled = true },
     words = { enabled = true },
     ---@type table<string, snacks.win.Config>
@@ -206,6 +206,7 @@ return {
     { '<leader>n', function() Snacks.notifier.show_history() end, desc = 'Notification History' },
     { '<leader>bd', function() Snacks.bufdelete() end, desc = 'Delete Buffer' },
     { '<leader>cr', vim.lsp.buf.rename, desc = 'Rename File' },
+    { '<leader>cs', function() Snacks.picker.spelling() end, desc = 'Spelling' },
     { '<leader>cR', function() Snacks.rename.rename_file() end, desc = 'Rename File' },
     { '<leader>gB', function() Snacks.gitbrowse() end, desc = 'Git Browse', mode = { 'n', 'v' } },
     { '<leader>un', function() Snacks.notifier.hide() end, desc = 'Dismiss All Notifications' },

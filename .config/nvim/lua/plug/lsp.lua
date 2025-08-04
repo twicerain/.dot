@@ -1,3 +1,5 @@
+vim.lsp.log.set_level(vim.log.levels.OFF)
+
 -- LSP Plugins
 return {
   {
@@ -102,16 +104,62 @@ return {
           },
         },
         dockerls = {},
-        docker_compose_language_service = {},
+        docker_compose_language_service = {
+          root_markers = {
+            'docker-compose.yaml',
+            'docker-compose.yml',
+            'docker-compose.yml',
+            'compose.yaml',
+            'compose.yml',
+          },
+        },
         rust_analyzer = {},
         gopls = {},
         fish_lsp = {},
+        tailwindcss = {
+          settings = {
+            tailwindCSS = {
+              classAttributes = {
+                'class',
+                'className',
+                'classNames',
+                'class:list',
+                'classList',
+                'ngClass',
+              },
+            },
+          },
+        },
+        emmet_language_server = {
+          filetypes = {
+            'css',
+            'eruby',
+            'html',
+            'javascript',
+            'javascriptreact',
+            'less',
+            'sass',
+            'scss',
+            'pug',
+            'typescriptreact',
+            'typescript',
+          },
+        },
+        taplo = {},
+        eslint = {},
+        prismals = {},
+        cssls = {},
+        css_variables = {},
+        cssmodules_ls = {},
+        postgres_lsp = {},
+        marksman = {},
       }
 
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
         'stylua',
-        'typescript-language-server',
+        'prettierd',
+        'prettier',
       })
 
       require('mason-tool-installer').setup({
