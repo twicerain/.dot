@@ -1,6 +1,8 @@
-[user]
-  name = rainrain
-  email = 102855367+twicerain@users.noreply.github.com
+[includeIf "gitdir:**/dev/work/**"]
+  path = .gitconfig.work
+
+[includeIf "gitdir:**/dev/rain/**"]
+  path = .gitconfig.rain
 
 [color]
   ui = true
@@ -25,6 +27,7 @@
 	defaultBranch = main
 
 [core]
+  excludesfile = ~/.gitignore.global
   pager = delta
   editor = nvim
   fsmonitor = true
@@ -53,7 +56,7 @@
 
 [merge]
   tool = nvimdiff
-  conflictstyle = zdiff3
+  conflictstyle = diff3
 
 [mergetool]
   prompt = false
@@ -94,9 +97,3 @@
 [credential "https://gist.github.com"]
 	helper =
 	helper = !/usr/bin/gh auth git-credential
-
-[filter "lfs"]
-	clean = git-lfs clean -- %f
-	smudge = git-lfs smudge -- %f
-	process = git-lfs filter-process
-	required = true

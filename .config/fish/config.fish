@@ -7,14 +7,13 @@ set -g fish_cursor_replace underscore
 set -g fish_cursor_external line
 set -g fish_cursor_visual block
 
-bind --mode insert ctrl-y accept-autosuggestion
+bind --mode insert \cy accept-autosuggestion
 
 # exports
 set -gx EDITOR (which nvim)
 set -gx VISUAL $EDITOR
 set -gx SUDO_EDITOR $EDITOR
 set -gx MANPAGER "nvim +Man!"
-
 set -gx STARSHIP_CONFIG $HOME/.config/starship/starship.toml
 set --universal nvm_default_version v24.5.0
 
@@ -70,7 +69,7 @@ alias lazydot "lazygit --git-dir=$HOME/.dot --work-tree=$HOME"
 alias wallpaper "~/.config/hyprland-de/scripts/wallpaper.sh"
 
 # start hyprland
-if uwsm check may-start; and uwsm select
+if command -q uwsm; and uwsm check may-start; and uwsm select
     exec uwsm start default
 end
 

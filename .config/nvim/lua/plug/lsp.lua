@@ -106,12 +106,17 @@ return {
         rust_analyzer = {},
         gopls = {},
         fish_lsp = {},
+        tailwindcss = {},
+        taplo = {},
+        eslint = {},
+        prismals = {},
       }
 
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
         'stylua',
-        'typescript-language-server',
+        'prettierd',
+        'prettier',
       })
 
       require('mason-tool-installer').setup({
