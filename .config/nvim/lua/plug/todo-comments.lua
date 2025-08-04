@@ -1,6 +1,7 @@
 return {
   'folke/todo-comments.nvim',
   dependencies = { 'nvim-lua/plenary.nvim' },
+  event = 'ColorScheme',
   opts = {
     -- your configuration comes here
     -- or leave it empty to use the default settings
@@ -9,16 +10,12 @@ return {
   keys = {
     {
       '<leader>st',
-      function()
-        Snacks.picker.todo_comments()
-      end,
+      function() Snacks.picker.todo_comments() end,
       desc = 'Todo',
     },
     {
       '<leader>sT',
-      function()
-        Snacks.picker.todo_comments({ keywords = { 'TODO', 'FIX', 'FIXME' } })
-      end,
+      function() Snacks.picker.todo_comments({ keywords = { 'TODO', 'FIX', 'FIXME' } }) end,
       desc = 'Todo/Fix/Fixme',
     },
   },

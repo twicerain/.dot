@@ -5,8 +5,10 @@ require('boot')
 require('acmd')
 
 -- custom plugins
-require('vrnu.init').setup({
-  freq = 1,
-  padding = 0,
+require('virtrnu').setup({
+  freq = 5,
+  padding = 4,
   align = 'left',
 })
+
+vim.keymap.set('n', '<leader>tv', '<CMD>Virtrnu toggle<CR>')
