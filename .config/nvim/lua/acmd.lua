@@ -64,7 +64,15 @@ vim.api.nvim_create_autocmd('FileType', {
     vim.schedule(function()
       vim.keymap.set('n', 'q', function()
         if vim.bo[event.buf].filetype == 'oil' then
-          vim.cmd('b#')
+          local success = pcall(vim.cmd, 'b#')
+          if not success then
+            if #vim.api.nvim_tabpage_list_wins(0) > 1 then
+              vim.cmd('close')
+            else
+              -- vim.cmd('enew') -- if you want to just open a new buffer
+              vim.cmd('quit') -- if you want to quit
+            end
+          end
         else
           vim.cmd('close')
         end
@@ -189,5 +197,26 @@ vim.api.nvim_create_autocmd('LspAttach', {
         }
       )
     end
+  end,
+})
+
+vim.api.nvim_create_autocmd({ 'FileType' }, {
+  pattern = { 'typescript', 'typescriptreact', 'javascript', 'javascriptreact' },
+  callback = function()
+    local current_file_dir = vim.fn.expand('%:p:h')
+    local package_json = vim.fn.findfile('package.json', current_file_dir .. ';')
+    if package_json ~= '' then
+      local project_root = vim.fn.fnamemodify(package_json, ':h')
+      vim.opt_local.makeprg = 'bash -c "cd ' .. vim.fn.shellescape(project_root) .. ' && npm run lint"'
+    else
+      vim.opt_local.makeprg = 'bash -c "cd %:p:h && npm run lint"'
+    end
+
+    -- Set errorformat for ESLint
+    vim.opt_local.errorformat = {
+      '%f',
+      '%*\\s%l:%c%*\\s%t%*\\w%*\\s%m',
+      '%-G%.%#',
+    }
   end,
 })
