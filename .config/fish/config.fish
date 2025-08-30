@@ -34,6 +34,9 @@ abbr vi nvim
 abbr v nvim
 abbr nv nvim
 abbr :q exit
+abbr :w clear
+abbr :oil 'nvim -c ":Oil"'
+abbr :Oil 'nvim -c ":Oil"'
 
 abbr lg lazygit
 abbr ld lazydocker
@@ -62,7 +65,7 @@ alias la "eza --color=always --icons --group-directories-first --all"
 alias ll "eza --color=always --icons --group-directories-first --all --long"
 
 alias fzfp "fzf --style full --preview 'bat --color=always --style=numbers --line-range=256 {}' --bind 'focus:transform-header:file --brief {}'"
-alias inv "fzf --style full --preview 'bat --color=always --style=numbers --line-range=256 {}' --bind 'focus:transform-header:file --brief {}' --bind 'enter:become(nvim {})'"
+alias inv "fzf --style full --preview 'bat --color=always --style=numbers' --bind 'focus:transform-header:file --brief {}' --bind 'enter:become(nvim {})'"
 
 alias lazydot "lazygit --git-dir=$HOME/.dot --work-tree=$HOME"
 

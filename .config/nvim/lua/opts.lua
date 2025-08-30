@@ -105,6 +105,15 @@ vim.o.smoothscroll = true
 vim.o.foldexpr = "v:lua.require'lazyvim.util'.ui.foldexpr()"
 vim.o.foldmethod = 'expr'
 vim.o.foldtext = ''
+vim.o.swapfile = false
 
 -- Fix markdown indentation settings
 vim.g.markdown_recommended_style = 0
+
+vim.filetype.add({
+  pattern = {
+    ['.*compose.*%.ya?ml'] = 'yaml.docker-compose',
+  },
+})
+
+vim.lsp.log.set_level(vim.log.levels.OFF)

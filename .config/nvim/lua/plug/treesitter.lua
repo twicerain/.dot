@@ -1,5 +1,10 @@
 return {
   {
+    'windwp/nvim-ts-autotag',
+    event = 'BufEnter',
+    opts = {},
+  },
+  {
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
     main = 'nvim-treesitter.configs',

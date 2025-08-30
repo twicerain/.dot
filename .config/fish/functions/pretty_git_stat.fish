@@ -7,28 +7,25 @@ function pretty_git_stat
     set -l NORM (set_color normal)
 
     # icon + branch
-    set -l output "$CYAN $MAG"(git branch --show-current)"$NORM"
+    printf '%s %s%s%s\n' $CYAN $MAG (git branch --show-current) $NORM
 
-    # Process diff --stat lines
+    # diff --stat with colours
     git -c color.ui=always diff --stat --color=always \
         | while read -l line
         if string match -qr '^\s*[0-9]+ files? changed' -- $line
             # summary line - color numbers
             set line (string replace -r '([0-9]+) (files?)' \
-                "$YEL\\1$NORM \\2" -- $line)
+                "$YEL\$1$NORM \$2" -- $line)
             set line (string replace -r '([0-9]+) (insertions?)\((.)\)' \
-                "$GRN\\1$NORM \\2 ($GRN\\3$NORM)" -- $line)
+                "$GRN\$1$NORM \$2 ($GRN\$3$NORM)" -- $line)
             set line (string replace -r '([0-9]+) (deletions?)\((.)\)' \
-                "$RED\\1$NORM \\2 ($RED\\3$NORM)" -- $line)
+                "$RED\$1$NORM \$2 ($RED\$3$NORM)" -- $line)
         else
             # file line - colour path
             set line (string replace -r '([^|]+)\|' \
-                "$YEL\\1$NORM|" -- $line)
+                "$YEL\$1$NORM|" -- $line)
         end
 
-        set output $output $line
+        printf '%s\n' $line
     end
-
-    # Join all lines with newlines but no trailing newline
-    string join \n $output
 end

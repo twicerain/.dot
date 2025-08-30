@@ -18,9 +18,9 @@ ui {
   }
 }
 
-load_plugins {
-  "file:~/.config/zellij/plugins/zellij_forgot.wasm"
-}
+// load_plugins {
+//   "file:~/.config/zellij/plugins/zellij_forgot.wasm"
+// }
 
 keybinds clear-defaults=true {
     locked {
@@ -182,11 +182,11 @@ keybinds clear-defaults=true {
     shared_except "locked" "renametab" "renamepane" {
         bind "Ctrl g" { SwitchToMode "locked"; }
         bind "Ctrl q" { Quit; }
-        bind "space" {
-          LaunchOrFocusPlugin "file:~/.config/zellij/plugins/zellij_forgot.wasm" {
-            floating true
-          }
-        }
+        // bind "space" {
+        //   LaunchOrFocusPlugin "file:~/.config/zellij/plugins/zellij_forgot.wasm" {
+        //     floating true
+        //   }
+        // }
     }
     shared_except "locked" "entersearch" {
         bind "enter" { SwitchToMode "locked"; }
