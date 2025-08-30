@@ -5,8 +5,8 @@ require('boot')
 require('acmd')
 
 -- custom plugins
-require('virtrnu').setup({
-  freq = 5,
-  padding = 4,
+require('vrnu.init').setup({
+  freq = 1,
+  padding = 0,
   align = 'left',
 })
