@@ -1,0 +1,20 @@
+notARepository: 'quit'
+promptToReturnFromSubprocess: false
+disableStartupPopups: true
+
+gui:
+  nerdFontsVersion: "3"
+  switchTabsWithPanelJumpKeys: true
+  expandFocusedSidePanel: true
+  commitLength:
+    show: true
+  showNumstatInFilesView: true
+
+git:
+  paging:
+  colorArg: always
+  pager: "delta --dark --paging=never"
+
+os:
+  editPreset: 'nvim'
+
