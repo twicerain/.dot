@@ -7,6 +7,7 @@ dotfiles bare repo.
 ### Requirements
 
 Requires only git:
+
 ```fish
 
 paru -Syu git
@@ -15,20 +16,27 @@ paru -Syu git
 ### Setup
 
 Clone the bare repo:
+
 ```fish
 git clone --bare https://github.com/twicerain/.dot.git ~/.dot
 ```
 
 Checkout files:
+
 ```fish
 git --git-dir=$HOME/.dot --work-tree=$HOME checkout
 ```
 
+Setup git credentials:
+
+```fish
+dot config user.name <username>
+dot config user.email <email>
+```
 
 ### Tracking
 
 All files are ignored by default, and added to untracked/tracked using the [.gitignore](.gitignore). This allows for easily adding changes to config files using [lazygit](.config/lazygit) or the [dot function](.config/fish/functions/dot.fish).
-
 
 ## Highlights
 
@@ -44,6 +52,3 @@ All files are ignored by default, and added to untracked/tracked using the [.git
   - nvim inspired by kickstart & lazyvim
 - [nvim virtual rnu](.config/nvim/lua/virtrnu)
   - custom nvim plugin rendering relative line numbers as virtual text to help with re jumps while scanning code
-
-
-

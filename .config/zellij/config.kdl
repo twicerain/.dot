@@ -4,9 +4,6 @@ default_mode "locked"
 default_shell "fish"
 default_layout "compact"
 
-// session_name "dev"
-// attach_to_session true
-
 on_force_close "quit"
 
 show_startup_tips false
@@ -18,9 +15,6 @@ ui {
   }
 }
 
-// load_plugins {
-//   "file:~/.config/zellij/plugins/zellij_forgot.wasm"
-// }
 
 keybinds clear-defaults=true {
     locked {
@@ -182,11 +176,6 @@ keybinds clear-defaults=true {
     shared_except "locked" "renametab" "renamepane" {
         bind "Ctrl g" { SwitchToMode "locked"; }
         bind "Ctrl q" { Quit; }
-        // bind "space" {
-        //   LaunchOrFocusPlugin "file:~/.config/zellij/plugins/zellij_forgot.wasm" {
-        //     floating true
-        //   }
-        // }
     }
     shared_except "locked" "entersearch" {
         bind "enter" { SwitchToMode "locked"; }

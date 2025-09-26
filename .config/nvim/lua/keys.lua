@@ -93,13 +93,17 @@ map('n', '<leader>fn', '<cmd>enew<cr>', { desc = 'New File' })
 -- location list
 map('n', '<leader>xl', function()
   local success, err = pcall(vim.fn.getloclist(0, { winid = 0 }).winid ~= 0 and vim.cmd.lclose or vim.cmd.lopen)
-  if not success and err then vim.notify(err, vim.log.levels.ERROR) end
+  if not success and err then
+    vim.notify(err, vim.log.levels.ERROR)
+  end
 end, { desc = 'Location List' })
 
 -- quickfix list
 map('n', '<leader>xq', function()
   local success, err = pcall(vim.fn.getqflist({ winid = 0 }).winid ~= 0 and vim.cmd.cclose or vim.cmd.copen)
-  if not success and err then vim.notify(err, vim.log.levels.ERROR) end
+  if not success and err then
+    vim.notify(err, vim.log.levels.ERROR)
+  end
 end, { desc = 'Quickfix List' })
 
 map('n', '[q', vim.cmd.cprev, { desc = 'Previous Quickfix' })
@@ -109,7 +113,9 @@ map('n', ']q', vim.cmd.cnext, { desc = 'Next Quickfix' })
 local diagnostic_goto = function(next, severity)
   local go = next and vim.diagnostic.goto_next or vim.diagnostic.goto_prev
   severity = severity and vim.diagnostic.severity[severity] or nil
-  return function() go({ severity = severity }) end
+  return function()
+    go({ severity = severity })
+  end
 end
 map('n', '<leader>cd', vim.diagnostic.open_float, { desc = 'Line Diagnostics' })
 map('n', ']d', diagnostic_goto(true), { desc = 'Next Diagnostic' })
@@ -146,21 +152,14 @@ map('n', '<leader><tab>[', '<cmd>tabprevious<cr>', { desc = 'Previous Tab' })
 
 -- native snippets. only needed on < 0.11, as 0.11 creates these by default
 if vim.fn.has('nvim-0.11') == 0 then
-  map(
-    's',
-    '<Tab>',
-    function() return vim.snippet.active({ direction = 1 }) and '<cmd>lua vim.snippet.jump(1)<cr>' or '<Tab>' end,
-    { expr = true, desc = 'Jump Next' }
-  )
-  map(
-    { 'i', 's' },
-    '<S-Tab>',
-    function() return vim.snippet.active({ direction = -1 }) and '<cmd>lua vim.snippet.jump(-1)<cr>' or '<S-Tab>' end,
-    { expr = true, desc = 'Jump Previous' }
-  )
+  map('s', '<Tab>', function()
+    return vim.snippet.active({ direction = 1 }) and '<cmd>lua vim.snippet.jump(1)<cr>' or '<Tab>'
+  end, { expr = true, desc = 'Jump Next' })
+  map({ 'i', 's' }, '<S-Tab>', function()
+    return vim.snippet.active({ direction = -1 }) and '<cmd>lua vim.snippet.jump(-1)<cr>' or '<S-Tab>'
+  end, { expr = true, desc = 'Jump Previous' })
 end
 
--- md table alignment
 local format_table = '!tr -s " " | column -t -s "|" -o "|"<cr>'
 local select_current_table = function()
   local ts = vim.treesitter
@@ -172,7 +171,7 @@ local select_current_table = function()
 
   if not node then
     print('No node found at cursor')
-    return
+    return false
   end
 
   while node do
@@ -185,13 +184,21 @@ local select_current_table = function()
       vim.cmd('normal! V')
       vim.api.nvim_win_set_cursor(0, { end_row, end_col })
 
-      return
+      return true
     end
     node = node:parent()
   end
 
   print('no table to format')
+  return false
 end
 
-vim.keymap.set('n', 'vaT', select_current_table, { desc = 'Select markdown table' })
-map('v', '<leader>ct', format_table, { desc = 'Format markdown tables' })
+local select_and_format_table = function()
+  if select_current_table() then
+    vim.cmd('normal! ' .. format_table)
+  end
+end
+
+vim.keymap.set('n', 'vaT', select_current_table, { desc = 'Select md table' })
+vim.keymap.set('n', '<leader>ct', select_and_format_table, { desc = 'Format md table under cursor' })
+vim.keymap.set('v', '<leader>ct', format_table, { desc = 'Format md table' })
