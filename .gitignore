@@ -3,6 +3,7 @@
 # default ignore all while allowing recursing specific dirs
 /*
 /.config/*
+/.config/nvim/**/*.spl
 
 # include
 !/README.md

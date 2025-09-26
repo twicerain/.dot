@@ -94,6 +94,7 @@ vim.o.sidescrolloff = 8 -- Columns of context
 vim.o.signcolumn = 'yes' -- Always show the signcolumn, otherwise it would shift the text each time
 vim.o.spell = true
 vim.opt.spelllang = { 'en_au' }
+vim.opt.spellfile = vim.fn.stdpath('config') .. '/spell/en.utf-8.add'
 vim.o.splitkeep = 'screen'
 vim.o.statuscolumn = [[%!v:lua.require'snacks.statuscolumn'.get()]]
 vim.o.undolevels = 10000
