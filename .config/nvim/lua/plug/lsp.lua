@@ -1,6 +1,3 @@
-vim.lsp.log.set_level(vim.log.levels.OFF)
-
--- LSP Plugins
 return {
   {
     'folke/lazydev.nvim',
@@ -14,197 +11,21 @@ return {
       },
     },
   },
-  {
-    -- Main LSP Configuration
-    'neovim/nvim-lspconfig',
-    dependencies = {
-      { 'mason-org/mason.nvim', opts = {} },
-      { 'mason-org/mason-lspconfig.nvim', opts = { automatic_enable = false } },
-      'WhoIsSethDaniel/mason-tool-installer.nvim',
-
-      -- Useful status updates for LSP.
-      { 'j-hui/fidget.nvim', opts = {} },
-
-      'saghen/blink.cmp',
-
-      { 'b0o/SchemaStore.nvim', version = false },
-    },
-    config = function()
-      -- Diagnostic Config
-      -- See :help vim.diagnostic.Opts
-      ---@type vim.diagnostic.Opts
-      vim.diagnostic.config({
-        severity_sort = true,
-        float = { border = 'rounded', source = true },
-        underline = { severity = vim.diagnostic.severity.ERROR },
-        virtual_text = {
-          source = 'if_many',
-          spacing = 2,
-          format = function(diagnostic)
-            local diagnostic_message = {
-              [vim.diagnostic.severity.ERROR] = diagnostic.message,
-              [vim.diagnostic.severity.WARN] = diagnostic.message,
-              [vim.diagnostic.severity.INFO] = diagnostic.message,
-              [vim.diagnostic.severity.HINT] = diagnostic.message,
-            }
-            return diagnostic_message[diagnostic.severity]
-          end,
-        },
-        virtual_lines = {
-          current_line = true,
-          source = 'if_many',
-          spacing = 2,
-          format = function(diagnostic)
-            local diagnostic_message = {
-              [vim.diagnostic.severity.ERROR] = diagnostic.message,
-              [vim.diagnostic.severity.WARN] = diagnostic.message,
-              [vim.diagnostic.severity.INFO] = diagnostic.message,
-              [vim.diagnostic.severity.HINT] = diagnostic.message,
-            }
-            return diagnostic_message[diagnostic.severity]
-          end,
-        },
-      })
-
-      local capabilities = require('blink.cmp').get_lsp_capabilities()
-
-      ---@type {[string]: lspconfig.Config}
-      local servers = {
-        lua_ls = {
-          settings = {
-            Lua = {
-              completion = {
-                callSnippet = 'Replace',
-              },
-              diagnostics = {
-                disable = { 'missing-fields', 'missing-parameter' },
-              },
-            },
-          },
-        },
-        denols = {
-          settings = {},
-          root_dir = require('lspconfig').util.root_pattern({
-            'deno.json',
-            'deno.jsonc',
-          }),
-          single_file_support = false,
-          workspace_required = true,
-        },
-        astro = {},
-        jsonls = {
-          settings = {
-            json = {
-              format = {
-                enable = true,
-              },
-              schemas = require('schemastore').json.schemas(),
-              validate = { enable = true },
-            },
-          },
-        },
-        dockerls = {},
-        docker_compose_language_service = {
-          root_markers = {
-            'docker-compose.yaml',
-            'docker-compose.yml',
-            'docker-compose.yml',
-            'compose.yaml',
-            'compose.yml',
-          },
-        },
-        rust_analyzer = {},
-        gopls = {},
-        fish_lsp = {},
-        qmlls = {},
-        bashls = {},
-        tailwindcss = {
-          settings = {
-            tailwindCSS = {
-              classAttributes = {
-                'class',
-                'className',
-                'classNames',
-                'class:list',
-                'classList',
-                'ngClass',
-              },
-            },
-          },
-        },
-        emmet_language_server = {
-          filetypes = {
-            'css',
-            'eruby',
-            'html',
-            'javascript',
-            'javascriptreact',
-            'less',
-            'sass',
-            'scss',
-            'pug',
-            'typescriptreact',
-            'typescript',
-          },
-        },
-        taplo = {},
-        eslint = {},
-        prismals = {},
-        cssls = {},
-        css_variables = {},
-        cssmodules_ls = {},
-        postgres_lsp = {},
-        marksman = {},
-      }
-
-      local ensure_installed = vim.tbl_keys(servers or {})
-      vim.list_extend(ensure_installed, {
-        'stylua',
-        'prettierd',
-        'prettier',
-      })
-
-      require('mason-tool-installer').setup({
-        ensure_installed = ensure_installed,
-      })
-
-      ---@type {[string]: lspconfig.Config}
-      local remote_servers = {
-        gdscript = {
-          on_attach = function(client, _bufnr)
-            local pipe_path = client.root_dir .. '/server.pipe'
-
-            if vim.uv.fs_stat(pipe_path) then return end
-
-            local success, server_addr = pcall(vim.fn.serverstart, pipe_path)
-            if not success then
-              vim.notify(
-                'Failed to start Godot server pipe: ' .. tostring(server_addr),
-                'warn'
-              )
-            end
-          end,
-        },
-      }
-
-      for name, cfg in
-        pairs(vim.tbl_deep_extend('force', servers, remote_servers))
-      do
-        cfg.capabilities =
-          vim.tbl_deep_extend('force', {}, capabilities, cfg.capabilities or {})
-        require('lspconfig')[name].setup(cfg)
-      end
-    end,
-  },
+  { 'neovim/nvim-lspconfig' },
+  { 'mason-org/mason.nvim', opts = {} },
+  { 'j-hui/fidget.nvim', opts = {} },
+  { 'b0o/SchemaStore.nvim', version = false },
   {
     'pmizio/typescript-tools.nvim',
     dependencies = { 'nvim-lua/plenary.nvim', 'neovim/nvim-lspconfig' },
     opts = {
       single_file_support = false,
       workspace_required = true,
-      suggest = {
-        names = false,
-        autoImports = false,
+      settings = {
+        suggest = {
+          names = false,
+          autoImports = false,
+        },
       },
     },
   },

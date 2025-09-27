@@ -1,39 +1,38 @@
--- autocmds
-local function augroup(name) return vim.api.nvim_create_augroup('rain' .. name, { clear = true }) end
+local function aug(name) return vim.api.nvim_create_augroup(name, { clear = true }) end
 
--- Toggle relative line numbers off in insert mode
-local toggle_ln_aug = augroup('toggle_ln')
+-- toggle relative line numbers off in insert mode
+local toggle_rnu = aug('toggle_rnu')
 vim.api.nvim_create_autocmd({ 'InsertLeave' }, {
-  group = toggle_ln_aug,
+  group = toggle_rnu,
   callback = function()
     if vim.wo.nu then vim.wo.rnu = true end
   end,
 })
 
 vim.api.nvim_create_autocmd({ 'InsertEnter' }, {
-  group = toggle_ln_aug,
+  group = toggle_rnu,
   callback = function()
     if vim.wo.nu then vim.wo.rnu = false end
   end,
 })
 
--- Check if we need to reload the file when it changed
+-- reload file if it changed during blur
 vim.api.nvim_create_autocmd({ 'FocusGained', 'TermClose', 'TermLeave' }, {
-  group = augroup('checktime'),
+  group = aug('checktime'),
   callback = function()
     if vim.o.buftype ~= 'nofile' then vim.cmd('checktime') end
   end,
 })
 
--- Highlight on yank
+-- hl on yank
 vim.api.nvim_create_autocmd('TextYankPost', {
-  group = augroup('highlight_yank'),
+  group = aug('hl_on_yank'),
   callback = function() vim.hl.on_yank() end,
 })
 
 -- resize splits if window got resized
 vim.api.nvim_create_autocmd({ 'VimResized' }, {
-  group = augroup('resize_splits'),
+  group = aug('resize_splits'),
   callback = function()
     local current_tab = vim.fn.tabpagenr()
     vim.cmd('tabdo wincmd =')
@@ -43,7 +42,7 @@ vim.api.nvim_create_autocmd({ 'VimResized' }, {
 
 -- go to last loc when opening a buffer
 vim.api.nvim_create_autocmd('BufReadPost', {
-  group = augroup('last_loc'),
+  group = aug('last_loc'),
   callback = function(event)
     local exclude = { 'gitcommit' }
     local buf = event.buf
@@ -57,7 +56,7 @@ vim.api.nvim_create_autocmd('BufReadPost', {
 
 -- close some filetypes with <q>
 vim.api.nvim_create_autocmd('FileType', {
-  group = augroup('close_with_q'),
+  group = aug('close_with_q'),
   pattern = vim.g.ignored_filetypes,
   callback = function(event)
     vim.bo[event.buf].buflisted = false
@@ -88,31 +87,28 @@ vim.api.nvim_create_autocmd('FileType', {
 
 -- make it easier to close man-files when opened inline
 vim.api.nvim_create_autocmd('FileType', {
-  group = augroup('man_unlisted'),
+  group = aug('man_unlisted'),
   pattern = { 'man' },
   callback = function(event) vim.bo[event.buf].buflisted = false end,
 })
 
--- wrap and check for spell in text filetypes
+-- wrap prose
 vim.api.nvim_create_autocmd('FileType', {
-  group = augroup('wrap_spell'),
+  group = aug('wrap'),
   pattern = { 'text', 'plaintex', 'typst', 'gitcommit', 'markdown' },
-  callback = function()
-    vim.opt_local.wrap = true
-    vim.opt_local.spell = true
-  end,
+  callback = function() vim.opt_local.wrap = true end,
 })
 
 -- Fix conceallevel for json files
 vim.api.nvim_create_autocmd({ 'FileType' }, {
-  group = augroup('json_conceal'),
+  group = aug('json_conceal'),
   pattern = { 'json', 'jsonc', 'json5' },
   callback = function() vim.opt_local.conceallevel = 0 end,
 })
 
--- Auto create dir when saving a file, in case some intermediate directory does not exist
+-- create dir when saving a file (-P)
 vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
-  group = augroup('auto_create_dir'),
+  group = aug('auto_create_dir'),
   callback = function(event)
     if event.match:match('^%w%w+:[\\/][\\/]') then return end
     local file = vim.uv.fs_realpath(event.match) or event.match
@@ -121,7 +117,7 @@ vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
 })
 
 vim.api.nvim_create_autocmd({ 'CursorMoved', 'DiagnosticChanged' }, {
-  group = augroup('diagnostic_virt_text_hide'),
+  group = aug('diagnostic_virt_text_hide'),
   callback = function(event)
     local lnum, _ = unpack(vim.api.nvim_win_get_cursor(0))
     lnum = lnum - 1 -- need 0-based index
@@ -151,7 +147,7 @@ vim.api.nvim_create_autocmd({ 'CursorMoved', 'DiagnosticChanged' }, {
 })
 
 vim.api.nvim_create_autocmd('LspAttach', {
-  group = augroup('lspattach'),
+  group = aug('lspattach'),
   callback = function(event)
     local client = vim.lsp.get_client_by_id(event.data.client_id)
 
@@ -161,31 +157,27 @@ vim.api.nvim_create_autocmd('LspAttach', {
       })
     end
 
-    -- The following two autocommands are used to highlight references of the
-    -- word under your cursor when your cursor rests there for a little while.
-    --    See `:help CursorHold` for information about when this is executed
-    --
-    -- When you move your cursor, the highlights will be cleared (the second autocommand).
+    -- lsp highlight word on hold
+    local lsp_hl = aug('lsp_hl')
     if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight, event.buf) then
-      local hl_group = augroup('lsphighlight')
       vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
         buffer = event.buf,
-        group = hl_group,
+        group = lsp_hl,
         callback = vim.lsp.buf.document_highlight,
       })
 
       vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
         buffer = event.buf,
-        group = hl_group,
+        group = lsp_hl,
         callback = vim.lsp.buf.clear_references,
       })
 
       vim.api.nvim_create_autocmd('LspDetach', {
-        group = augroup('lspdetach'),
+        group = aug('lspdetach'),
         callback = function(event2)
           vim.lsp.buf.clear_references()
           vim.api.nvim_clear_autocmds({
-            group = hl_group,
+            group = lsp_hl,
             buffer = event2.buf,
           })
         end,
@@ -219,7 +211,6 @@ vim.api.nvim_create_autocmd({ 'FileType' }, {
       vim.opt_local.makeprg = 'bash -c "cd %:p:h && npm run lint"'
     end
 
-    -- Set errorformat for ESLint
     vim.opt_local.errorformat = {
       '%f',
       '%*\\s%l:%c%*\\s%t%*\\w%*\\s%m',

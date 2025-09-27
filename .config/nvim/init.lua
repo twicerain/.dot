@@ -1,8 +1,8 @@
 require('opts')
-require('globals')
-require('keys')
+require('maps')
 require('boot')
 require('acmd')
+require('lsp')
 
 -- custom plugins
 require('vrnu').setup({

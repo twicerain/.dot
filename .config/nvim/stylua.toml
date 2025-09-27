@@ -5,5 +5,5 @@ quote_style = "AutoPreferSingle"
 line_endings = "Unix"
 call_parentheses = "Always"
 space_after_function_names = "Never"
-collapse_simple_statement = "Never"
+collapse_simple_statement = "Always"
 sort_requires = { enabled = true }

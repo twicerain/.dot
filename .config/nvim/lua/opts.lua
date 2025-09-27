@@ -1,83 +1,104 @@
-vim.g.mapleader = ' '
-vim.g.maplocalleader = '\\'
+local g, o, opt = vim.g, vim.o, vim.opt
 
-vim.o.background = 'dark'
-
-vim.schedule(function()
-  vim.o.clipboard = vim.env.SSH_TTY and '' or 'unnamedplus' -- Sync with system clipboard
-end)
-
-vim.o.nu = true
-vim.o.rnu = true
-
-vim.o.ts = 2
-vim.o.sts = 2
-vim.o.sw = 2
-vim.o.expandtab = true
-vim.o.smartindent = true
-vim.o.breakindent = true
-
-vim.o.wrap = false
-
-vim.o.termguicolors = true
-
-vim.o.mouse = 'a'
-vim.o.showmode = false
-
-vim.o.undofile = true
-
-vim.o.incsearch = true
-vim.o.ignorecase = true
-vim.o.smartcase = true
-vim.o.inccommand = 'split'
-
-vim.o.signcolumn = 'yes'
-
-vim.o.updatetime = 200
-vim.o.timeoutlen = 300
-
-vim.o.splitright = true
-vim.o.splitbelow = true
-
-vim.o.list = true
-vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
-
-vim.o.cursorline = true
-vim.o.scrolloff = 16
-
-vim.o.confirm = true
-
-vim.o.autowrite = true -- Enable auto write
-vim.o.completeopt = 'menu,menuone,noselect'
-vim.o.conceallevel = 2 -- Hide * markup for bold and italic, but not markers with substitutions
-vim.o.confirm = true -- Confirm to save changes before exiting modified buffer
-vim.o.cursorline = true -- Enable highlighting of the current line
-vim.o.expandtab = true -- Use spaces instead of tabs
-vim.opt.fillchars = {
-  foldopen = '',
-  foldclose = '',
-  fold = ' ',
-  foldsep = ' ',
-  diff = '╱',
-  eob = ' ',
+g.mapleader = ' '
+g.maplocalleader = '\\'
+g.ignored_filetypes = {
+  'PlenaryTestPopup',
+  'checkhealth',
+  'dbout',
+  'gitsigns-blame',
+  'grug-far',
+  'help',
+  'lspinfo',
+  'neotest-output',
+  'neotest-output-panel',
+  'neotest-summary',
+  'notify',
+  'qf',
+  'spectre_panel',
+  'startuptime',
+  'tsplayground',
+  'oil',
 }
-vim.o.foldlevel = 99
-vim.o.formatexpr = "v:lua.require'lazyvim.util'.format.formatexpr()"
-vim.o.formatoptions = 'jcroqlnt' -- tcqj
-vim.o.grepformat = '%f:%l:%c:%m'
-vim.o.grepprg = 'rg --vimgrep'
-vim.o.ignorecase = true -- Ignore case
-vim.o.inccommand = 'nosplit' -- preview incremental substitute
-vim.o.jumpoptions = 'view'
-vim.o.laststatus = 3 -- global statusline
-vim.o.linebreak = true -- Wrap lines at convenient points
-vim.o.list = true -- Show some invisible characters (tabs...
-vim.o.mouse = 'a' -- Enable mouse mode
-vim.o.number = true -- Print line number
-vim.o.pumblend = 10 -- Popup blend
-vim.o.pumheight = 10 -- Maximum number of entries in a popup
-vim.o.ruler = false -- Disable the default ruler
-vim.opt.sessionoptions = {
+g.markdown_recommended_style = 0
+g.markdown_fenced_languages = {
+  'ts=typescript',
+}
+
+vim.schedule(function() o.clipboard = vim.env.SSH_TTY and '' or 'unnamedplus' end)
+
+-- numbers
+o.nu = true
+o.rnu = true
+
+-- ui
+o.conceallevel = 2
+o.winborder = 'rounded'
+o.background = 'dark'
+o.termguicolors = true
+o.signcolumn = 'yes'
+o.statuscolumn = [[%!v:lua.require'snacks.statuscolumn'.get()]]
+o.laststatus = 3
+o.showmode = false
+o.list = true
+opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
+o.cursorline = true
+o.pumblend = 10 -- Popup blend
+o.pumheight = 10 -- Maximum number of entries in a popup
+o.ruler = false -- Disable the default ruler
+opt.shortmess:append({ W = true, I = true, c = true, C = true })
+
+-- behaviour
+o.swapfile = false
+o.confirm = true
+o.updatetime = 200
+o.timeoutlen = 300
+o.jumpoptions = 'view'
+o.mouse = 'a'
+
+-- scrolling
+o.scrolloff = 16
+o.sidescrolloff = 16
+o.virtualedit = 'block'
+o.smoothscroll = true
+
+-- undo
+o.undofile = true
+o.undolevels = 10000
+
+-- split
+o.splitkeep = 'screen'
+o.splitright = true
+o.splitbelow = true
+
+-- spacing
+o.ts = 2
+o.sts = 2
+o.sw = 2
+o.shiftround = true
+o.expandtab = true
+o.smartindent = true
+o.breakindent = true
+o.wrap = false
+
+-- search
+o.inccommand = 'split'
+o.incsearch = true
+o.ignorecase = true
+o.smartcase = true
+
+-- fold
+o.foldlevel = 99
+o.foldmethod = 'indent'
+o.foldtext = ''
+
+-- format
+o.formatoptions = 'jcroqlnt'
+o.grepformat = '%f:%l:%c:%m'
+o.grepprg = 'rg --vimgrep'
+o.linebreak = true
+o.wildmode = 'longest:full,full' -- Command-line completion mode
+opt.sessionoptions = {
   'buffers',
   'curdir',
   'tabpages',
@@ -87,35 +108,8 @@ vim.opt.sessionoptions = {
   'skiprtp',
   'folds',
 }
-vim.o.shiftround = true -- Round indent
-vim.o.shiftwidth = 2 -- Size of an indent
-vim.opt.shortmess:append({ W = true, I = true, c = true, C = true })
-vim.o.sidescrolloff = 8 -- Columns of context
-vim.o.signcolumn = 'yes' -- Always show the signcolumn, otherwise it would shift the text each time
-vim.o.spell = true
-vim.opt.spelllang = { 'en_au' }
-vim.opt.spellfile = vim.fn.stdpath('config') .. '/spell/en.utf-8.add'
-vim.o.splitkeep = 'screen'
-vim.o.statuscolumn = [[%!v:lua.require'snacks.statuscolumn'.get()]]
-vim.o.undolevels = 10000
-vim.o.virtualedit = 'block' -- Allow cursor to move where there is no text in visual block mode
-vim.o.wildmode = 'longest:full,full' -- Command-line completion mode
-vim.o.winminwidth = 5 -- Minimum window width
-vim.o.winborder = 'rounded'
 
-vim.o.smoothscroll = true
-vim.o.foldexpr = "v:lua.require'lazyvim.util'.ui.foldexpr()"
-vim.o.foldmethod = 'expr'
-vim.o.foldtext = ''
-vim.o.swapfile = false
-
--- Fix markdown indentation settings
-vim.g.markdown_recommended_style = 0
-
-vim.filetype.add({
-  pattern = {
-    ['.*compose.*%.ya?ml'] = 'yaml.docker-compose',
-  },
-})
-
-vim.lsp.log.set_level(vim.log.levels.OFF)
+-- spelling
+o.spell = true
+opt.spelllang = { 'en_au' }
+o.spellfile = vim.fn.stdpath('config') .. '/spell/en.utf-8.add'
