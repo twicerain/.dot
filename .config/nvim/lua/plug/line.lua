@@ -43,15 +43,13 @@ return {
           fmt = function(str)
             local reg = vim.fn.reg_recording()
             local recording = ''
-            if reg ~= '' then
-              recording = ' @' .. reg
-            end
+            if reg ~= '' then recording = ' @' .. reg end
             return string.lower(str:sub(1, 1)) .. recording
           end,
         },
       },
       lualine_b = { 'branch', 'diff', 'diagnostics' },
-      lualine_c = { 'filename' },
+      lualine_c = { 'filename', 'wpm' },
       lualine_x = { 'encoding', 'fileformat', 'filetype' },
       lualine_y = { 'progress' },
       lualine_z = { 'location' },
